@@ -556,8 +556,8 @@
         display: block !important;
 
         transition:
-          transform 0.12s ease,
-          opacity 0.12s ease !important;
+          transform 0.22s ease,
+          opacity 0.22s ease !important;
       }
     }
 
@@ -1255,7 +1255,6 @@
 
         window.addEventListener('pointermove', (e) => {
 
-
           /* -------------------------------------------------
              POSITION CURSOR
              ------------------------------------------------- */
@@ -1267,18 +1266,20 @@
             `${e.clientY}px`;
 
 
-
           /* -------------------------------------------------
-             HIDE OVER CLICKABLE ELEMENTS
+             HIDE / SHRINK OVER CLICKABLE ELEMENTS
              ------------------------------------------------- */
 
           const clickable =
             e.target.closest(
-              'a, button, input, select, [role="button"], .action-btn'
+              'a:not(.logo-placeholder), button, input, select, textarea, label, [role="button"]'
             );
 
 
           if (clickable) {
+
+            customCursor.style.transform =
+              'translate(-50%, -50%) rotate(45deg) scale(0.15)';
 
             customCursor.style.opacity = '0';
 
@@ -1286,105 +1287,44 @@
           }
 
 
-
           /* -------------------------------------------------
              NORMAL PAGE
              ------------------------------------------------- */
 
-          if (!activeCard) {
+          customCursor.textContent = '>';
 
-            customCursor.textContent = '>';
+          customCursor.style.transform =
+            'translate(-50%, -50%) rotate(-135deg) scale(1)';
 
-            customCursor.style.transform =
-              'translate(-50%, -50%) rotate(-135deg)';
-
-            customCursor.style.opacity = '1';
-
-            return;
-          }
-
-
-
-          /* -------------------------------------------------
-             CASE STUDY OPEN
-             ------------------------------------------------- */
-
-          const rect =
-            activeCard.getBoundingClientRect();
-
-
-          const relativeX =
-            e.clientX - rect.left;
-
-
-          const pages =
-            activeCard.querySelectorAll('.case-page');
-
-
-          const currentStep =
-            parseInt(
-              activeCard.getAttribute(
-                'data-current-step'
-              ) || '0',
-              10
-            );
-
-
-          isMouseOnLeft =
-            relativeX < rect.width / 2;
-
-
-
-          /* -------------------------------------------------
-             LEFT SIDE
-             ------------------------------------------------- */
-
-          if (isMouseOnLeft) {
-
-            customCursor.textContent = '<';
-
-            customCursor.style.transform =
-              'translate(-50%, -50%) rotate(0deg)';
-
-
-            /*
-              Faint arrow on first slide.
-            */
-
-            customCursor.style.opacity =
-              currentStep === 0
-                ? '0.15'
-                : '1';
-
-          }
-
-
-
-          /* -------------------------------------------------
-             RIGHT SIDE
-             ------------------------------------------------- */
-
-          else {
-
-            customCursor.textContent = '>';
-
-            customCursor.style.transform =
-              'translate(-50%, -50%) rotate(0deg)';
-
-
-            /*
-              Faint arrow on final slide.
-            */
-
-            customCursor.style.opacity =
-              currentStep === pages.length - 1
-                ? '0.15'
-                : '1';
-          }
+          customCursor.style.opacity = '1';
 
         });
-}
 
+
+        /* -------------------------------------------------
+           HIDE WHEN POINTER LEAVES THE PAGE
+           ------------------------------------------------- */
+
+        document.documentElement.addEventListener(
+          'mouseleave',
+          () => {
+            customCursor.style.opacity = '0';
+          }
+        );
+
+
+        /* -------------------------------------------------
+           SHOW WHEN POINTER ENTERS THE PAGE
+           ------------------------------------------------- */
+
+        document.documentElement.addEventListener(
+          'mouseenter',
+          () => {
+            customCursor.style.opacity = '1';
+          }
+        );
+
+      }
 
 
       /* =====================================================
