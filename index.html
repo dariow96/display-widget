@@ -1291,12 +1291,123 @@
              NORMAL PAGE
              ------------------------------------------------- */
 
+          if (!activeCard) {
+
+            customCursor.textContent = '>';
+
+            customCursor.style.transform =
+              'translate(-50%, -50%) rotate(-135deg) scale(1)';
+
+            customCursor.style.opacity = '1';
+
+            return;
+          }
+
+
+          /* -------------------------------------------------
+             CASE STUDY OPEN — LEFT / RIGHT SLIDE CURSOR
+             ------------------------------------------------- */
+
+          const rect =
+            activeCard.getBoundingClientRect();
+
+          const relativeX =
+            e.clientX - rect.left;
+
+          const pages =
+            activeCard.querySelectorAll('.case-page');
+
+          const currentStep =
+            parseInt(
+              activeCard.getAttribute(
+                'data-current-step'
+              ) || '0',
+              10
+            );
+
+
+          /* -------------------------------------------------
+             20% CENTER ZONE = NORMAL CURSOR
+
+             The middle 20% of the card/viewport is neutral:
+             40% -> 60%.
+
+             Outside that zone, the cursor smoothly changes
+             into the left/right slide navigation cursor.
+             ------------------------------------------------- */
+
+          const centerStart = rect.width * 0.40;
+          const centerEnd = rect.width * 0.60;
+
+          const distanceFromCenter =
+            relativeX < centerStart
+              ? centerStart - relativeX
+              : relativeX - centerEnd;
+
+          /* Keep the existing state used by the slide
+             click handler. Only the cursor presentation
+             changes inside the neutral center zone. */
+
+          isMouseOnLeft =
+            relativeX < rect.width / 2;
+
+
+          /* -------------------------------------------------
+             CENTER 20% = NORMAL CURSOR
+             ------------------------------------------------- */
+
+          if (
+            relativeX >= centerStart &&
+            relativeX <= centerEnd
+          ) {
+
+            customCursor.textContent = '>';
+
+            customCursor.style.transform =
+              'translate(-50%, -50%) rotate(-135deg) scale(1)';
+
+            customCursor.style.opacity = '1';
+
+            return;
+          }
+
+
+          /* -------------------------------------------------
+             LEFT SIDE = PREVIOUS
+
+             Use a small smooth transition zone so the cursor
+             does not snap abruptly at 40%.
+             ------------------------------------------------- */
+
+          if (relativeX < centerStart) {
+
+            customCursor.textContent = '<';
+
+            customCursor.style.transform =
+              'translate(-50%, -50%) rotate(0deg) scale(1)';
+
+            customCursor.style.opacity =
+              currentStep === 0
+                ? '0.15'
+                : '1';
+
+            return;
+          }
+
+
+          /* -------------------------------------------------
+             RIGHT SIDE = NEXT
+             ------------------------------------------------- */
+
           customCursor.textContent = '>';
 
           customCursor.style.transform =
-            'translate(-50%, -50%) rotate(-135deg) scale(1)';
+            'translate(-50%, -50%) rotate(0deg) scale(1)';
 
-          customCursor.style.opacity = '1';
+          customCursor.style.opacity =
+            currentStep === pages.length - 1
+              ? '0.15'
+              : '1';
 
         });
 
