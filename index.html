@@ -241,43 +241,78 @@
       box-shadow: 0 0 8px rgba(255, 255, 255, 0.5); 
       transition: width 0.4s cubic-bezier(0.25, 1, 0.5, 1); 
     }
+/* =========================================================
+   CUSTOM CURSOR
+   ========================================================= */
 
-    /* ==========================================================================
-       SITE-WIDE CUSTOM FLOATING CHEVRON CURSOR STYLES - FIXED ANCHORS
-       ========================================================================== */
-    html, body, a, button, label, select, input, .interactive-card, .interactive-card * {
-      cursor: none !important; /* Locks out old operating system hardware mouse graphics */
-    }
+/* DESKTOP ONLY */
+@media (min-width: 769px) {
 
-#dynamic-cursor {
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 40px !important;
-  height: 40px !important;
-  margin-top: -20px !important;
-  margin-left: -20px !important;
+  /* Hide the native cursor everywhere */
+  html,
+  body,
+  html *,
+  body * {
+    cursor: none !important;
+  }
 
-  pointer-events: none !important;
-  z-index: 99999999 !important;
+  /* Personalized cursor */
+  #dynamic-cursor {
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
 
-  font-size: 2.5rem !important;
-  font-weight: 900 !important;
-  font-family: sans-serif !important;
-  color: #ffffff !important;
+    width: 40px !important;
+    height: 40px !important;
 
-  mix-blend-mode: difference !important;
-  line-height: 40px !important;
-  text-align: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
 
-  display: block !important;
-  opacity: 1;
+    pointer-events: none !important;
 
-  transform-origin: center center !important;
+    z-index: 999999 !important;
 
-  transition:
-    transform 0.15s cubic-bezier(0.25, 1, 0.5, 1),
-    opacity 0.15s ease !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 2.5rem !important;
+    font-weight: 900 !important;
+    line-height: 40px !important;
+    text-align: center !important;
+
+    color: #ffffff !important;
+    mix-blend-mode: difference !important;
+
+    transform: translate(-50%, -50%) rotate(-135deg);
+    transform-origin: center center !important;
+
+    opacity: 1;
+
+    display: block !important;
+
+    transition:
+      transform 0.12s ease,
+      opacity 0.12s ease !important;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+  /* Restore the normal browser cursor */
+  html,
+  body,
+  html *,
+  body * {
+    cursor: auto !important;
+  }
+
+  /* Disable personalized cursor completely */
+  #dynamic-cursor {
+    display: none !important;
+  }
 }
 
     .case-study-actions {
@@ -464,84 +499,313 @@
      JAVASCRIPT DYNAMIC MOTOR ENGINE (COMPLETE SANITIZED EDITION)
      ========================================================================== -->
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const container = document.getElementById('grid-container');
-    const cards = document.querySelectorAll('.interactive-card');
-    const customCursor = document.getElementById('dynamic-cursor');
+ document.addEventListener('DOMContentLoaded', () => {
 
-    let activeCard = null; 
-    let isMouseOnLeft = false;
+  const container = document.getElementById('grid-container');
+  const cards = document.querySelectorAll('.interactive-card');
+  const customCursor = document.getElementById('dynamic-cursor');
 
-    // Track global window mouse movements for site-wide pointer placement
-window.addEventListener('mousemove', (e) => {
-  if (!customCursor) return;
+  let activeCard = null;
+  let isMouseOnLeft = false;
 
-  // Always follow the physical mouse
-  customCursor.style.left = e.clientX + 'px';
-  customCursor.style.top = e.clientY + 'px';
 
-  // --------------------------------------------------
-  // 1. HIDE CUSTOM CURSOR OVER CLICKABLE ELEMENTS
-  // --------------------------------------------------
+  /* =========================================================
+     CUSTOM CURSOR
+     ========================================================= */
 
-  const clickable = e.target.closest(
-    'a, button, input, select, textarea, label, [role="button"], [data-clickable]'
-  );
+  if (customCursor) {
 
-  if (clickable) {
-    customCursor.style.opacity = '0';
-    return;
-  }
+    window.addEventListener('pointermove', (e) => {
 
-  // --------------------------------------------------
-  // 2. NORMAL PAGE STATE
-  // --------------------------------------------------
+      /* -----------------------------------------
+         Position cursor
+         ----------------------------------------- */
 
-  if (!activeCard) {
-    customCursor.textContent = '>';
-    customCursor.style.transform = 'rotate(-135deg)';
-    customCursor.style.opacity = '1';
-    return;
-  }
+      customCursor.style.left = `${e.clientX}px`;
+      customCursor.style.top = `${e.clientY}px`;
 
-  // --------------------------------------------------
-  // 3. EXPANDED CASE STUDY
-  // --------------------------------------------------
 
-  const rect = activeCard.getBoundingClientRect();
+      /* -----------------------------------------
+         Hide cursor over clickable elements
+         ----------------------------------------- */
 
-  const relativeX = e.clientX - rect.left;
-  isMouseOnLeft = relativeX < rect.width / 2;
+      const clickable = e.target.closest(
+        'a, button, input, select, textarea, label, [role="button"], .action-btn'
+      );
 
-  const pages = activeCard.querySelectorAll('.case-page');
+      if (clickable) {
+        customCursor.style.opacity = '0';
+        return;
+      }
 
-  const currentStep = parseInt(
-    activeCard.getAttribute('data-current-step') || '0'
-  );
 
-  if (isMouseOnLeft) {
+      /* -----------------------------------------
+         Normal page
+         ----------------------------------------- */
 
-    customCursor.textContent = '<';
-    customCursor.style.transform = 'rotate(0deg)';
+      if (!activeCard) {
 
-    // First slide: no previous page
-    customCursor.style.opacity =
-      currentStep === 0 ? '0.15' : '1';
+        customCursor.textContent = '>';
 
-  } else {
+        customCursor.style.transform =
+          'translate(-50%, -50%) rotate(-135deg)';
 
-    customCursor.textContent = '>';
-    customCursor.style.transform = 'rotate(0deg)';
+        customCursor.style.opacity = '1';
 
-    // Last slide: no next page
-    customCursor.style.opacity =
-      currentStep === pages.length - 1 ? '0.15' : '1';
-  }
-});
+        return;
+      }
 
-    document.addEventListener('mouseleave', () => {
-      if (customCursor) customCursor.style.opacity = '0';
+
+      /* -----------------------------------------
+         Case study is open
+         ----------------------------------------- */
+
+      const rect = activeCard.getBoundingClientRect();
+
+      const relativeX = e.clientX - rect.left;
+
+      const pages = activeCard.querySelectorAll('.case-page');
+
+      const currentStep = parseInt(
+        activeCard.getAttribute('data-current-step') || '0',
+        10
+      );
+
+
+      /* -----------------------------------------
+         LEFT HALF = PREVIOUS
+         ----------------------------------------- */
+
+      if (relativeX < rect.width / 2) {
+
+        isMouseOnLeft = true;
+
+        customCursor.textContent = '<';
+
+        customCursor.style.transform =
+          'translate(-50%, -50%) rotate(0deg)';
+
+        /* Faint if already on first slide */
+        customCursor.style.opacity =
+          currentStep === 0 ? '0.15' : '1';
+
+      }
+
+
+      /* -----------------------------------------
+         RIGHT HALF = NEXT
+         ----------------------------------------- */
+
+      else {
+
+        isMouseOnLeft = false;
+
+        customCursor.textContent = '>';
+
+        customCursor.style.transform =
+          'translate(-50%, -50%) rotate(0deg)';
+
+        /* Faint if already on last slide */
+        customCursor.style.opacity =
+          currentStep === pages.length - 1 ? '0.15' : '1';
+      }
+
     });
+
+
+    /* -----------------------------------------
+       Mouse leaves page
+       ----------------------------------------- */
+
+    document.documentElement.addEventListener('mouseleave', () => {
+      customCursor.style.opacity = '0';
+    });
+
+
+    /* -----------------------------------------
+       Mouse returns to page
+       ----------------------------------------- */
+
+    document.documentElement.addEventListener('mouseenter', () => {
+      customCursor.style.opacity = '1';
+    });
+  }
+
+
+  /* =========================================================
+     CARD INTERACTION
+     ========================================================= */
+
+  cards.forEach(card => {
+
+    const openButton = card.querySelector('.case-study-btn');
+    const closeButton = card.querySelector('.close-cross-btn');
+    const backButton = card.querySelector('.back-btn');
+
+    const pages = card.querySelectorAll('.case-page');
+
+    let currentStep = 0;
+
+
+    /* -----------------------------------------
+       Open case study
+       ----------------------------------------- */
+
+    if (openButton) {
+
+      openButton.addEventListener('click', (e) => {
+
+        e.stopPropagation();
+
+        activeCard = card;
+
+        currentStep = 0;
+
+        card.setAttribute(
+          'data-current-step',
+          currentStep
+        );
+
+        card.classList.add('expanded');
+
+        pages.forEach((page, index) => {
+          page.classList.toggle(
+            'active',
+            index === currentStep
+          );
+        });
+
+      });
+    }
+
+
+    /* -----------------------------------------
+       Navigate case-study pages
+       ----------------------------------------- */
+
+    card.addEventListener('click', (e) => {
+
+      /* Don't navigate when clicking buttons/links */
+      if (
+        e.target.closest(
+          'a, button, input, select, textarea, label, [role="button"]'
+        )
+      ) {
+        return;
+      }
+
+      /* Only navigate when this card is active */
+      if (activeCard !== card) {
+        return;
+      }
+
+      const rect = card.getBoundingClientRect();
+
+      const relativeX = e.clientX - rect.left;
+
+
+      /* ---------------------------------------
+         Click LEFT = previous page
+         --------------------------------------- */
+
+      if (relativeX < rect.width / 2) {
+
+        if (currentStep > 0) {
+          currentStep--;
+        }
+
+      }
+
+
+      /* ---------------------------------------
+         Click RIGHT = next page
+         --------------------------------------- */
+
+      else {
+
+        if (currentStep < pages.length - 1) {
+          currentStep++;
+        }
+      }
+
+
+      /* Update current slide */
+      card.setAttribute(
+        'data-current-step',
+        currentStep
+      );
+
+      pages.forEach((page, index) => {
+
+        page.classList.toggle(
+          'active',
+          index === currentStep
+        );
+
+      });
+
+    });
+
+
+    /* -----------------------------------------
+       Close button
+       ----------------------------------------- */
+
+    const closeCard = (e) => {
+
+      if (e) {
+        e.stopPropagation();
+      }
+
+      card.classList.remove('expanded');
+
+      activeCard = null;
+
+      currentStep = 0;
+
+      card.setAttribute(
+        'data-current-step',
+        currentStep
+      );
+
+      pages.forEach((page, index) => {
+
+        page.classList.toggle(
+          'active',
+          index === 0
+        );
+
+      });
+
+    };
+
+
+    if (closeButton) {
+      closeButton.addEventListener('click', closeCard);
+    }
+
+    if (backButton) {
+      backButton.addEventListener('click', closeCard);
+    }
+
+
+    /* -----------------------------------------
+       Prevent button clicks from bubbling
+       ----------------------------------------- */
+
+    card.querySelectorAll(
+      '.case-study-btn, .close-cross-btn, .back-btn, .action-btn'
+    ).forEach(button => {
+
+      button.addEventListener('click', (e) => {
+        e.stopPropagation();
+      });
+
+    });
+
+  });
+
+});
 
     cards.forEach(card => {
       const openBtn = card.querySelector('.case-study-btn');
