@@ -4,7 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Premium Portfolio Grid</title>
+
   <style>
+
+    /* =========================================================
+       BASE
+       ========================================================= */
+
     body {
       margin: 0;
       padding: 0;
@@ -12,16 +18,10 @@
       background-color: #0b0b0b;
     }
 
-    /* Force Breakout of Container Layouts inside Squarespace block wrappers */
-    .sqs-block-code, 
-    .sqs-block-code .sqs-block-content,
-    .fe-block,
-    .fluid-engine {
-      padding: 0 !important;
-      margin: 0 !important;
-      max-width: 100% !important;
-      width: 100% !important;
-    }
+
+    /* =========================================================
+       FULL BLEED GRID
+       ========================================================= */
 
     .full-bleed-grid-container {
       display: flex;
@@ -31,11 +31,16 @@
       position: relative;
       left: 0;
       right: 0;
-      gap: 0px; 
+      gap: 0;
       box-sizing: border-box;
       overflow: hidden;
       background-color: #0b0b0b;
     }
+
+
+    /* =========================================================
+       CARDS
+       ========================================================= */
 
     .interactive-card {
       position: relative;
@@ -43,855 +48,1582 @@
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
+
       display: flex;
-      align-items: center; 
-      justify-content: center; 
-      text-align: center; 
-      transition: flex 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+
+      transition:
+        flex 0.5s cubic-bezier(0.25, 1, 0.5, 1);
     }
 
-    .full-bleed-grid-container:not(.card-expanded) .interactive-card:hover {
-      flex: 1.8; 
+
+    .full-bleed-grid-container:not(.card-expanded)
+    .interactive-card:hover {
+      flex: 1.8;
     }
+
 
     .card-overlay {
       position: absolute;
       top: 0;
       left: 0;
+
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.3); 
-      transition: background 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+
+      background: rgba(0, 0, 0, 0.3);
+
+      transition:
+        background 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+
       z-index: 1;
     }
-    
-    .full-bleed-grid-container:not(.card-expanded) .interactive-card:hover .card-overlay {
-      background: rgba(0, 0, 0, 0.7); 
+
+
+    .full-bleed-grid-container:not(.card-expanded)
+    .interactive-card:hover
+    .card-overlay {
+      background: rgba(0, 0, 0, 0.7);
     }
+
 
     .interactive-card.expanded {
       flex: 100 !important;
     }
-    
-    .full-bleed-grid-container.card-expanded .interactive-card:not(.expanded) {
+
+
+    .full-bleed-grid-container.card-expanded
+    .interactive-card:not(.expanded) {
       flex: 0 !important;
       width: 0 !important;
       max-width: 0 !important;
       padding: 0 !important;
       overflow: hidden;
     }
-    
+
+
     .interactive-card.expanded .card-overlay {
       background: rgba(0, 0, 0, 0.85) !important;
     }
 
+
+    /* =========================================================
+       CARD CONTENT
+       ========================================================= */
+
     .card-content {
       position: relative;
       z-index: 2;
+
       color: #ffffff;
-      width: 480px; 
+
+      width: 480px;
       max-width: 90%;
+
       margin: 0 auto;
-      transition: width 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+
+      transition:
+        width 0.5s cubic-bezier(0.25, 1, 0.5, 1);
     }
-    
+
+
     .interactive-card.expanded .card-content {
-      width: 760px !important; 
+      width: 760px !important;
     }
+
 
     .card-title {
       color: #ffffff !important;
-      font-size: 45px !important; 
+
+      font-size: 45px !important;
       font-family: sans-serif;
       font-weight: bold !important;
+
       margin: 0 0 10px 0 !important;
-      text-shadow: 0 4px 12px rgba(0,0,0,0.5);
-      transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+
+      text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+
+      transition:
+        transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
     }
-    
-    .full-bleed-grid-container:not(.card-expanded):hover .interactive-card:not(:hover) .card-title {
+
+
+    .full-bleed-grid-container:not(.card-expanded):hover
+    .interactive-card:not(:hover)
+    .card-title {
       transform: scale(0.62);
     }
+
 
     .card-description {
       font-size: 1rem;
       line-height: 1.4;
+
       margin: 0 0 20px 0 !important;
+
       color: #e5e5e5 !important;
+
       font-family: "Trebuchet MS", sans-serif !important;
+
       display: none;
       opacity: 0;
     }
-    
-    .interactive-card:not(.expanded):hover .card-description {
+
+
+    .interactive-card:not(.expanded):hover
+    .card-description {
       display: block;
       animation: UIElementFadeIn 0.3s ease 0.5s forwards;
     }
+
+
+    /* =========================================================
+       CASE STUDY BUTTON
+       ========================================================= */
 
     .case-study-btn {
       display: none;
       opacity: 0;
-      background: rgba(0, 0, 0, 0.5); 
+
+      background: rgba(0, 0, 0, 0.5);
       color: #ffffff;
+
       padding: 12px 28px;
+
       font-family: sans-serif;
       font-weight: 600;
+
       text-transform: uppercase;
+
       font-size: 0.8rem;
       letter-spacing: 2px;
+
       border: 1px solid rgba(255, 255, 255, 0.4);
-      backdrop-filter: blur(4px); 
-      transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+
+      backdrop-filter: blur(4px);
+
+      transition:
+        background 0.3s ease,
+        border-color 0.3s ease,
+        transform 0.3s ease;
     }
-    
+
+
     .case-study-btn:hover {
       background: #ffffff;
       color: #000000;
+
       border-color: #ffffff;
+
       transform: translateY(-2px);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+
+      box-shadow:
+        0 10px 20px rgba(0, 0, 0, 0.3);
     }
-    
-    .interactive-card:not(.expanded):hover .case-study-btn {
+
+
+    .interactive-card:not(.expanded):hover
+    .case-study-btn {
       display: inline-block;
       animation: UIElementFadeIn 0.3s ease 0.5s forwards;
     }
 
+
+    /* =========================================================
+       CASE STUDY DETAIL
+       ========================================================= */
+
     .case-study-detail {
       display: none;
+
       text-align: left;
+
       position: relative;
     }
-    
-    .interactive-card.expanded .grid-view-content { 
-      display: none !important; 
+
+
+    .interactive-card.expanded .grid-view-content {
+      display: none !important;
     }
-    
+
+
     .interactive-card.expanded .case-study-detail {
       display: block;
+
       opacity: 0;
-      animation: UIElementFadeIn 0.4s ease 0.4s forwards;
+
+      animation:
+        UIElementFadeIn 0.4s ease 0.4s forwards;
     }
+
+
+    /* =========================================================
+       CASE STUDY PAGES
+       ========================================================= */
 
     .case-page {
       display: none;
+
       opacity: 0;
-      padding: 0 45px; 
-      user-select: none !important; 
+
+      padding: 0 45px;
+
+      user-select: none !important;
       -webkit-user-select: none !important;
     }
-    
+
+
     .case-page.active {
       display: block;
+
       opacity: 1;
-      animation: UIElementFadeIn 0.3s ease forwards;
+
+      animation:
+        UIElementFadeIn 0.3s ease forwards;
     }
+
 
     .case-study-detail h2 {
       font-family: "Trebuchet MS", sans-serif;
+
       font-size: 2.5rem;
-      margin: 0 0 60px 0 !important; 
+
+      margin: 0 0 60px 0 !important;
+
       color: #ffffff !important;
     }
-    
+
+
     .case-study-detail p {
       font-family: "Trebuchet MS", sans-serif;
+
       font-size: 1.1rem;
       line-height: 1.6;
+
       color: #e5e5e5 !important;
+
       margin: 0 !important;
     }
 
+
+    /* =========================================================
+       CLOSE BUTTON
+       ========================================================= */
+
     .close-cross-btn {
       position: absolute;
-      top: -20px;            
-      right: 0px;           
+
+      top: -20px;
+      right: 0;
+
       background: transparent !important;
+
       border: none !important;
+
       color: rgba(255, 255, 255, 0.4) !important;
-      font-size: 2.2rem !important;    
-      font-weight: 300 !important;     
+
+      font-size: 2.2rem !important;
+      font-weight: 300 !important;
+
       line-height: 1 !important;
+
       user-select: none;
-      z-index: 2000;        
-      transition: color 0.3s ease, transform 0.3s cubic-bezier(0.25, 1, 0.5, 1) !important;
+
+      z-index: 2000;
+
+      transition:
+        color 0.3s ease,
+        transform 0.3s cubic-bezier(0.25, 1, 0.5, 1) !important;
     }
+
 
     .close-cross-btn:hover {
       color: #ffffff !important;
-      transform: rotate(90deg) scale(1.1) !important; 
+
+      transform:
+        rotate(90deg) scale(1.1) !important;
     }
 
+
+    /* =========================================================
+       PROGRESS BAR
+       ========================================================= */
+
     .case-progress-container {
-      width: calc(100% - 90px); 
-      height: 2px;               
-      background: rgba(255, 255, 255, 0.1); 
-      margin: 40px auto 0 auto;  
+      width: calc(100% - 90px);
+
+      height: 2px;
+
+      background: rgba(255, 255, 255, 0.1);
+
+      margin: 40px auto 0 auto;
+
       position: relative;
+
       overflow: hidden;
     }
 
+
     .case-progress-bar {
       position: absolute;
+
       top: 0;
       left: 0;
+
       height: 100%;
-      width: 0%; 
-      background: #ffffff; 
-      box-shadow: 0 0 8px rgba(255, 255, 255, 0.5); 
-      transition: width 0.4s cubic-bezier(0.25, 1, 0.5, 1); 
+
+      width: 0%;
+
+      background: #ffffff;
+
+      box-shadow:
+        0 0 8px rgba(255, 255, 255, 0.5);
+
+      transition:
+        width 0.4s cubic-bezier(0.25, 1, 0.5, 1);
     }
-/* =========================================================
-   CUSTOM CURSOR
-   ========================================================= */
-
-/* DESKTOP ONLY */
-@media (min-width: 769px) {
-
-  /* Hide the native cursor everywhere */
-  html,
-  body,
-  html *,
-  body * {
-    cursor: none !important;
-  }
-
-  /* Personalized cursor */
-  #dynamic-cursor {
-    position: fixed !important;
-    left: 0 !important;
-    top: 0 !important;
-
-    width: 40px !important;
-    height: 40px !important;
-
-    margin: 0 !important;
-    padding: 0 !important;
-
-    pointer-events: none !important;
-
-    z-index: 999999 !important;
-
-    font-family: Arial, Helvetica, sans-serif !important;
-    font-size: 2.5rem !important;
-    font-weight: 900 !important;
-    line-height: 40px !important;
-    text-align: center !important;
-
-    color: #ffffff !important;
-    mix-blend-mode: difference !important;
-
-    transform: translate(-50%, -50%) rotate(-135deg);
-    transform-origin: center center !important;
-
-    opacity: 1;
-
-    display: block !important;
-
-    transition:
-      transform 0.12s ease,
-      opacity 0.12s ease !important;
-  }
-}
 
 
-/* =========================================================
-   MOBILE
-   ========================================================= */
-
-@media (max-width: 768px) {
-
-  /* Restore the normal browser cursor */
-  html,
-  body,
-  html *,
-  body * {
-    cursor: auto !important;
-  }
-
-  /* Disable personalized cursor completely */
-  #dynamic-cursor {
-    display: none !important;
-  }
-}
+    /* =========================================================
+       CASE STUDY ACTIONS
+       ========================================================= */
 
     .case-study-actions {
-      display: none; 
+      display: none;
+
       gap: 15px;
+
       margin-top: 40px;
+
       padding: 0 45px;
     }
-    
+
+
     .action-btn {
       text-decoration: none !important;
+
       padding: 12px 28px !important;
+
       font-family: sans-serif !important;
       font-weight: 600 !important;
+
       text-transform: uppercase !important;
+
       font-size: 0.8rem !important;
       letter-spacing: 2px !important;
+
       user-select: none;
+
       display: inline-block;
-      transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.3s ease !important;
+
+      transition:
+        background 0.3s ease,
+        color 0.3s ease,
+        border-color 0.3s ease,
+        transform 0.3s ease !important;
     }
-    
+
+
     .action-btn:hover {
       transform: translateY(-2px) !important;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3) !important;
+
+      box-shadow:
+        0 10px 20px rgba(0, 0, 0, 0.3) !important;
     }
-    
-    .estimator-btn { background: #0066cc !important; color: #ffffff !important; border: 1px solid #0066cc !important; }
-    .estimator-btn:hover { background: #0052a3 !important; border-color: #0052a3 !important; }
-    .back-btn { background: rgba(0, 0, 0, 0.3) !important; color: #ffffff !important; border: 1px solid rgba(255, 255, 255, 0.4) !important; backdrop-filter: blur(4px) !important; }
-    .back-btn:hover { background: #ffffff !important; color: #000000 !important; border-color: #ffffff !important; }
+
+
+    .estimator-btn {
+      background: #0066cc !important;
+      color: #ffffff !important;
+
+      border: 1px solid #0066cc !important;
+    }
+
+
+    .estimator-btn:hover {
+      background: #0052a3 !important;
+      border-color: #0052a3 !important;
+    }
+
+
+    .back-btn {
+      background: rgba(0, 0, 0, 0.3) !important;
+
+      color: #ffffff !important;
+
+      border:
+        1px solid rgba(255, 255, 255, 0.4) !important;
+
+      backdrop-filter: blur(4px) !important;
+    }
+
+
+    .back-btn:hover {
+      background: #ffffff !important;
+
+      color: #000000 !important;
+
+      border-color: #ffffff !important;
+    }
+
+
+    /* =========================================================
+       FADE ANIMATION
+       ========================================================= */
 
     @keyframes UIElementFadeIn {
-      0% { opacity: 0; }
-      100% { opacity: 1; }
+      0% {
+        opacity: 0;
+      }
+
+      100% {
+        opacity: 1;
+      }
     }
+
+
+    /* =========================================================
+       CUSTOM CURSOR — DESKTOP
+       ========================================================= */
+
+    @media (min-width: 769px) {
+
+      /*
+        Hide the native browser cursor everywhere
+        on desktop.
+      */
+      html,
+      body,
+      html *,
+      body * {
+        cursor: none !important;
+      }
+
+
+      /*
+        Personalized cursor.
+
+        The translate(-50%, -50%) keeps the cursor
+        centered exactly on the mouse position.
+      */
+      #dynamic-cursor {
+        position: fixed !important;
+
+        left: 0 !important;
+        top: 0 !important;
+
+        width: 40px !important;
+        height: 40px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        pointer-events: none !important;
+
+        z-index: 999999 !important;
+
+        font-family:
+          Arial,
+          Helvetica,
+          sans-serif !important;
+
+        font-size: 2.5rem !important;
+
+        font-weight: 900 !important;
+
+        line-height: 40px !important;
+
+        text-align: center !important;
+
+        color: #ffffff !important;
+
+        /*
+          Keeps the cursor visible on both
+          light and dark backgrounds.
+        */
+        mix-blend-mode: difference !important;
+
+        transform:
+          translate(-50%, -50%)
+          rotate(-135deg);
+
+        transform-origin: center center !important;
+
+        opacity: 1;
+
+        display: block !important;
+
+        transition:
+          transform 0.12s ease,
+          opacity 0.12s ease !important;
+      }
+    }
+
+
+    /* =========================================================
+       MOBILE
+       ========================================================= */
 
     @media (max-width: 768px) {
-      .full-bleed-grid-container { flex-direction: column !important; width: 100% !important; margin-left: 0 !important; margin-right: 0 !important; left: auto !important; right: auto !important; min-height: auto !important; }
-      .interactive-card { min-height: 40vh !important; flex: none !important; }
-      .card-content { width: 85% !important; }
-      .interactive-card.expanded { min-height: 100vh !important; }
-      .full-bleed-grid-container.card-expanded .interactive-card:not(.expanded) { min-height: 0 !important; height: 0 !important; }
-      .case-page { padding: 0 20px !important; }
-      .case-study-actions { flex-direction: column !important; padding: 0 20px !important; }
-      html, body, a, button, label, select, input, .interactive-card, .interactive-card * { cursor: auto !important; }
-      #dynamic-cursor { display: none !important; } 
+
+      .full-bleed-grid-container {
+        flex-direction: column !important;
+
+        width: 100% !important;
+
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+
+        left: auto !important;
+        right: auto !important;
+
+        min-height: auto !important;
+      }
+
+
+      .interactive-card {
+        min-height: 40vh !important;
+
+        flex: none !important;
+      }
+
+
+      .card-content {
+        width: 85% !important;
+      }
+
+
+      .interactive-card.expanded {
+        min-height: 100vh !important;
+      }
+
+
+      .full-bleed-grid-container.card-expanded
+      .interactive-card:not(.expanded) {
+        min-height: 0 !important;
+
+        height: 0 !important;
+      }
+
+
+      .case-page {
+        padding: 0 20px !important;
+      }
+
+
+      .case-study-actions {
+        flex-direction: column !important;
+
+        padding: 0 20px !important;
+      }
+
+
+      /*
+        Restore native cursor on mobile.
+      */
+      html,
+      body,
+      html *,
+      body * {
+        cursor: auto !important;
+      }
+
+
+      /*
+        Completely disable personalized cursor.
+      */
+      #dynamic-cursor {
+        display: none !important;
+      }
     }
+
   </style>
 </head>
+
+
 <body>
 
-<div class="full-bleed-grid-container" id="grid-container">
-  
-  
-  <!-- CARD 1: AUTOMOTIVE & TECH -->
-  <div class="interactive-card" style="background-image: url('https://www.r25media.com/s/Captura-de-pantalla-2025-12-04-162713.png');">
-    <div class="card-overlay"></div>
-    <div class="card-content">
-      <div class="grid-view-content">
-        <h3 class="card-title">FOR<br>AUTOMOTIVE<br>& TECH</h3>
-        <p class="card-description">Leveraging Unreal Engine and realistic 3D rendering, we bridge the gap between complex mechanics and consumer desire, producing visual assets that elevate your product and cement your market leadership.</p>
-        <button class="case-study-btn">Case Studies</button>
+
+  <!-- =======================================================
+       PORTFOLIO GRID
+       ======================================================= -->
+
+  <div
+    class="full-bleed-grid-container"
+    id="grid-container"
+  >
+
+
+    <!-- =====================================================
+         CARD 1: AUTOMOTIVE & TECH
+         ===================================================== -->
+
+    <div
+      class="interactive-card"
+      style="background-image: url('https://www.r25media.com/s/Captura-de-pantalla-2025-12-04-162713.png');"
+    >
+
+      <div class="card-overlay"></div>
+
+      <div class="card-content">
+
+        <div class="grid-view-content">
+
+          <h3 class="card-title">
+            FOR<br>
+            AUTOMOTIVE<br>
+            & TECH
+          </h3>
+
+          <p class="card-description">
+            Leveraging Unreal Engine and realistic 3D rendering,
+            we bridge the gap between complex mechanics and
+            consumer desire, producing visual assets that
+            elevate your product and cement your market
+            leadership.
+          </p>
+
+          <button class="case-study-btn">
+            Case Studies
+          </button>
+
+        </div>
+
+
+        <div class="case-study-detail">
+
+          <button
+            class="close-cross-btn"
+            aria-label="Close Case Study"
+          >
+            &times;
+          </button>
+
+
+          <div class="slides-window">
+
+            <div class="case-page active">
+
+              <h2>
+                Summary and Overview
+              </h2>
+
+              <p>
+                This is where your deep-dive case study begins.
+                Showcase the project scope, initial client
+                challenges, or overall cinematic visual goals
+                here.
+              </p>
+
+            </div>
+
+
+            <div class="case-page">
+
+              <h2>
+                The Hurdle
+              </h2>
+
+              <p>
+                Detail how your veteran team designed the workflow
+                architecture. Highlight how Unreal Engine bridged
+                structural mechanical layouts with gorgeous
+                real-time rendering assets.
+              </p>
+
+            </div>
+
+
+            <div class="case-page">
+
+              <h2>
+                The Blueprint
+              </h2>
+
+              <p>
+                Explain the specific high-fidelity workflow
+                metrics, asset development pipelines, and
+                scale-accurate visual engineering methods
+                deployed during development.
+              </p>
+
+            </div>
+
+
+            <div class="case-page">
+
+              <h2>
+                The Impact
+              </h2>
+
+              <p>
+                Present your final project outcomes or industry
+                metrics. Your client can now understand complex
+                engineering models before production lines even
+                open.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="case-progress-container">
+
+            <div class="case-progress-bar"></div>
+
+          </div>
+
+
+          <div class="case-study-actions">
+
+            <a
+              href="https://www.r25media.com/projectconfigurator"
+              class="action-btn estimator-btn"
+              target="_blank"
+            >
+              Personalized Project Estimator
+            </a>
+
+            <button class="action-btn back-btn">
+              Back
+            </button>
+
+          </div>
+
+        </div>
+
       </div>
 
-      <div class="case-study-detail">
-        <button class="close-cross-btn" aria-label="Close Case Study">&times;</button>
-        <div class="slides-window">
-          <div class="case-page active">
-            <h2>Summary and Overview</h2>
-            <p>This is where your deep-dive case study begins. Showcase the project scope, initial client challenges, or overall cinematic visual goals here.</p>
-          </div>
-          <div class="case-page">
-            <h2>The Hurdle</h2>
-            <p>Detail how your veteran team designed the workflow architecture. Highlight how Unreal Engine bridged structural mechanical layouts with gorgeous real-time rendering assets.</p>
-          </div>
-          <div class="case-page">
-            <h2>The Blueprint</h2>
-            <p>Explain the specific high-fidelity workflow metrics, asset development pipelines, and scale-accurate visual engineering methods deployed during development.</p>
-          </div>
-          <div class="case-page">
-            <h2>The Impact</h2>
-            <p>Present your final project outcomes or industry metrics. Your client can now understand complex engineering models before production lines even open.</p>
-          </div>
-        </div>
-        <div class="case-progress-container">
-          <div class="case-progress-bar"></div>
-        </div>
-        <div class="case-study-actions">
-          <a href="https://www.r25media.com/projectconfigurator" class="action-btn estimator-btn" target="_blank">Personalized Project Estimator</a>
-          <button class="action-btn back-btn">Back</button>
-        </div>
-      </div>
     </div>
+
+
+
+    <!-- =====================================================
+         CARD 2: STUDIOS & ENTERTAINMENT
+         ===================================================== -->
+
+    <div
+      class="interactive-card"
+      style="background-image: url('https://www.r25media.com/s/Captura-de-pantalla-2025-12-29-182412.png');"
+    >
+
+      <div class="card-overlay"></div>
+
+      <div class="card-content">
+
+        <div class="grid-view-content">
+
+          <h3 class="card-title">
+            FOR<br>
+            STUDIOS &<br>
+            ENTERTAINMENT
+          </h3>
+
+          <p class="card-description">
+            Driven by a veteran creative team with production
+            experience for major entertainment brands, we deliver
+            high-fidelity VFX, character animation, and virtual
+            environments speeding up your production timeline.
+          </p>
+
+          <button class="case-study-btn">
+            Case Studies
+          </button>
+
+        </div>
+
+
+        <div class="case-study-detail">
+
+          <button
+            class="close-cross-btn"
+            aria-label="Close Case Study"
+          >
+            &times;
+          </button>
+
+
+          <div class="slides-window">
+
+            <div class="case-page active">
+
+              <h2>
+                Summary and Overview
+              </h2>
+
+              <p>
+                Driven by a veteran creative team, we speed up
+                production timelines by delivering high-fidelity
+                VFX and virtual environments that integrate
+                seamlessly into existing pipelines.
+              </p>
+
+            </div>
+
+
+            <div class="case-page">
+
+              <h2>
+                The Hurdle
+              </h2>
+
+              <p>
+                Detail the traditional rendering bottlenecks,
+                tight timeline demands, and complex pipeline
+                data management challenges major entertainment
+                brands face.
+              </p>
+
+            </div>
+
+
+            <div class="case-page">
+
+              <h2>
+                The Blueprint
+              </h2>
+
+              <p>
+                Explain your studio's custom deployment of
+                cloud-based render farms, custom pipeline
+                automation tools, and real-time environment
+                compilation engines.
+              </p>
+
+            </div>
+
+
+            <div class="case-page">
+
+              <h2>
+                The Impact
+              </h2>
+
+              <p>
+                Showcase your visual milestones: accelerated
+                turnaround speeds, 40% reduction in rendering
+                pipeline overhead, and broadcast-ready cinematic
+                fidelity.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="case-progress-container">
+
+            <div class="case-progress-bar"></div>
+
+          </div>
+
+
+          <div class="case-study-actions">
+
+            <a
+              href="https://www.r25media.com/projectconfigurator"
+              class="action-btn estimator-btn"
+              target="_blank"
+            >
+              Personalized Project Estimator
+            </a>
+
+            <button class="action-btn back-btn">
+              Back
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         CARD 3: MARITIME & YACHTS
+         ===================================================== -->
+
+    <div
+      class="interactive-card"
+      style="background-image: url('https://www.r25media.com/s/yacht-render.PNG');"
+    >
+
+      <div class="card-overlay"></div>
+
+      <div class="card-content">
+
+        <div class="grid-view-content">
+
+          <h3 class="card-title">
+            FOR<br>
+            MARITIME<br>
+            & YACHTS
+          </h3>
+
+          <p class="card-description">
+            We transform luxury spaces and elaborated mechanics
+            into cinematic, scale-accurate animations that allow
+            your clients to easily understand complex engineering
+            before the keel is ever laid.
+          </p>
+
+          <button class="case-study-btn">
+            Case Studies
+          </button>
+
+        </div>
+
+
+        <div class="case-study-detail">
+
+          <button
+            class="close-cross-btn"
+            aria-label="Close Case Study"
+          >
+            &times;
+          </button>
+
+
+          <div class="slides-window">
+
+            <div class="case-page active">
+
+              <h2>
+                Summary and Overview
+              </h2>
+
+              <p>
+                We transform luxury spaces and elaborate naval
+                mechanics into scale-accurate animations that
+                allow clients to experience a vessel before
+                the keel is laid.
+              </p>
+
+            </div>
+
+
+            <div class="case-page">
+
+              <h2>
+                The Hurdle
+              </h2>
+
+              <p>
+                Address the difficulties of displaying
+                hyper-detailed marine engineering schemas and
+                bespoke luxury interior fitments accurately
+                through flat 2D layout sketches.
+              </p>
+
+            </div>
+
+
+            <div class="case-page">
+
+              <h2>
+                The Blueprint
+              </h2>
+
+              <p>
+                Highlight the rendering process: converting
+                complex CAD architecture files into beautifully
+                illuminated, real-time interactive walkthrough
+                models.
+              </p>
+
+            </div>
+
+
+            <div class="case-page">
+
+              <h2>
+                The Impact
+              </h2>
+
+              <p>
+                Deliver the final outcomes: complete clarity
+                for international clientele, accelerated
+                pre-sale contract loops, and an immersive
+                preview experience.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="case-progress-container">
+
+            <div class="case-progress-bar"></div>
+
+          </div>
+
+
+          <div class="case-study-actions">
+
+            <a
+              href="https://www.r25media.com/projectconfigurator"
+              class="action-btn estimator-btn"
+              target="_blank"
+            >
+              Personalized Project Estimator
+            </a>
+
+            <button class="action-btn back-btn">
+              Back
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
   </div>
 
-  <!-- CARD 2: STUDIOS & ENTERTAINMENT -->
-  <div class="interactive-card" style="background-image: url('https://www.r25media.com/s/Captura-de-pantalla-2025-12-29-182412.png');">
-    <div class="card-overlay"></div>
-    <div class="card-content">
-      <div class="grid-view-content">
-        <h3 class="card-title">FOR<br>STUDIOS &<br>ENTERTAINMENT</h3>
-        <p class="card-description">Driven by a veteran creative team with production experience for major entertainment brands, we deliver high-fidelity VFX, character animation, and virtual environments speeding up your production timeline.</p>
-        <button class="case-study-btn">Case Studies</button>
-      </div>
-
-      <div class="case-study-detail">
-        <button class="close-cross-btn" aria-label="Close Case Study">&times;</button>
-        <div class="slides-window">
-          <div class="case-page active">
-            <h2>Summary and Overview</h2>
-            <p>Driven by a veteran creative team, we speed up production timelines by delivering high-fidelity VFX and virtual environments that integrate seamlessly into existing pipelines.</p>
-          </div>
-          <div class="case-page">
-            <h2>The Hurdle</h2>
-            <p>Detail the traditional rendering bottlenecks, tight timeline demands, and complex pipeline data management challenges major entertainment brands face.</p>
-          </div>
-          <div class="case-page">
-            <h2>The Blueprint</h2>
-            <p>Explain your studio's custom deployment of cloud-based render farms, custom pipeline automation tools, and real-time environment compilation engines.</p>
-          </div>
-          <div class="case-page">
-            <h2>The Impact</h2>
-            <p>Showcase your visual milestones: accelerated turnaround speeds, 40% reduction in rendering pipeline overhead, and broadcast-ready cinematic fidelity.</p>
-          </div>
-        </div>
-        <div class="case-progress-container">
-          <div class="case-progress-bar"></div>
-        </div>
-        <div class="case-study-actions">
-          <a href="https://www.r25media.com/projectconfigurator" class="action-btn estimator-btn" target="_blank">Personalized Project Estimator</a>
-          <button class="action-btn back-btn">Back</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- CARD 3: MARITIME & YACHTS -->
-  <div class="interactive-card" style="background-image: url('https://www.r25media.com/s/yacht-render.PNG');">
-    <div class="card-overlay"></div>
-    <div class="card-content">
-      <div class="grid-view-content">
-        <h3 class="card-title">FOR<br>MARITIME<br>& YACHTS</h3>
-        <p class="card-description">We transform luxury spaces and elaborated mechanics into cinematic, scale-accurate animations that allow your clients to easily understand complex engineering before the keel is ever laid.</p>
-        <button class="case-study-btn">Case Studies</button>
-      </div>
-
-      <div class="case-study-detail">
-        <button class="close-cross-btn" aria-label="Close Case Study">&times;</button>
-        <div class="slides-window">
-          <div class="case-page active">
-            <h2>Summary and Overview</h2>
-            <p>We transform luxury spaces and elaborate naval mechanics into scale-accurate animations that allow clients to experience a vessel before the keel is laid.</p>
-          </div>
-          <div class="case-page">
-            <h2>The Hurdle</h2>
-            <p>Address the difficulties of displaying hyper-detailed marine engineering schemas and bespoke luxury interior fitments accurately through flat 2D layout sketches.</p>
-          </div>
-          <div class="case-page">
-            <h2>The Blueprint</h2>
-            <p>Highlight the rendering process: converting complex CAD architecture files into beautifully illuminated, real-time interactive walkthrough models.</p>
-          </div>
-          <div class="case-page">
-            <h2>The Impact</h2>
-            <p>Deliver the final outcomes: complete clarity for international clientele, accelerated pre-sale contract loops, and an immersive preview experience.</p>
-          </div>
-        </div>
-        <div class="case-progress-container">
-          <div class="case-progress-bar"></div>
-        </div>
-        <div class="case-study-actions">
-          <a href="https://www.r25media.com/projectconfigurator" class="action-btn estimator-btn" target="_blank">Personalized Project Estimator</a>
-          <button class="action-btn back-btn">Back</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</div> <!-- End of full-bleed-grid-container -->
-
-<div id="dynamic-cursor">&gt;</div>
-
-<!-- ==========================================================================
-     JAVASCRIPT DYNAMIC MOTOR ENGINE (COMPLETE SANITIZED EDITION)
-     ========================================================================== -->
-<script>
- document.addEventListener('DOMContentLoaded', () => {
-
-  const container = document.getElementById('grid-container');
-  const cards = document.querySelectorAll('.interactive-card');
-  const customCursor = document.getElementById('dynamic-cursor');
-
-  let activeCard = null;
-  let isMouseOnLeft = false;
-
-
-  /* =========================================================
-     CUSTOM CURSOR
-     ========================================================= */
 
-  if (customCursor) {
 
-    window.addEventListener('pointermove', (e) => {
+  <!-- =======================================================
+       PERSONALIZED CURSOR
+       ======================================================= -->
 
-      /* -----------------------------------------
-         Position cursor
-         ----------------------------------------- */
+  <div id="dynamic-cursor">&gt;</div>
 
-      customCursor.style.left = `${e.clientX}px`;
-      customCursor.style.top = `${e.clientY}px`;
 
 
-      /* -----------------------------------------
-         Hide cursor over clickable elements
-         ----------------------------------------- */
+  <!-- =======================================================
+       JAVASCRIPT
+       ======================================================= -->
 
-      const clickable = e.target.closest(
-        'a, button, input, select, textarea, label, [role="button"], .action-btn'
-      );
+  <script>
 
-      if (clickable) {
-        customCursor.style.opacity = '0';
-        return;
-      }
+    document.addEventListener('DOMContentLoaded', () => {
 
+      const container =
+        document.getElementById('grid-container');
 
-      /* -----------------------------------------
-         Normal page
-         ----------------------------------------- */
+      const cards =
+        document.querySelectorAll('.interactive-card');
 
-      if (!activeCard) {
+      const customCursor =
+        document.getElementById('dynamic-cursor');
 
-        customCursor.textContent = '>';
 
-        customCursor.style.transform =
-          'translate(-50%, -50%) rotate(-135deg)';
+      let activeCard = null;
 
-        customCursor.style.opacity = '1';
+      let isMouseOnLeft = false;
 
-        return;
-      }
 
 
-      /* -----------------------------------------
-         Case study is open
-         ----------------------------------------- */
+      /* =====================================================
+         CUSTOM CURSOR
+         ===================================================== */
 
-      const rect = activeCard.getBoundingClientRect();
+      if (customCursor) {
 
-      const relativeX = e.clientX - rect.left;
+        window.addEventListener('pointermove', (e) => {
 
-      const pages = activeCard.querySelectorAll('.case-page');
 
-      const currentStep = parseInt(
-        activeCard.getAttribute('data-current-step') || '0',
-        10
-      );
+          /* -------------------------------------------------
+             POSITION CURSOR
+             ------------------------------------------------- */
 
+          customCursor.style.left =
+            `${e.clientX}px`;
 
-      /* -----------------------------------------
-         LEFT HALF = PREVIOUS
-         ----------------------------------------- */
+          customCursor.style.top =
+            `${e.clientY}px`;
 
-      if (relativeX < rect.width / 2) {
 
-        isMouseOnLeft = true;
 
-        customCursor.textContent = '<';
+          /* -------------------------------------------------
+             HIDE OVER CLICKABLE ELEMENTS
+             ------------------------------------------------- */
 
-        customCursor.style.transform =
-          'translate(-50%, -50%) rotate(0deg)';
+          const clickable =
+            e.target.closest(
+              'a, button, input, select, textarea, label, [role="button"], .action-btn'
+            );
 
-        /* Faint if already on first slide */
-        customCursor.style.opacity =
-          currentStep === 0 ? '0.15' : '1';
 
-      }
+          if (clickable) {
 
+            customCursor.style.opacity = '0';
 
-      /* -----------------------------------------
-         RIGHT HALF = NEXT
-         ----------------------------------------- */
+            return;
+          }
 
-      else {
 
-        isMouseOnLeft = false;
 
-        customCursor.textContent = '>';
+          /* -------------------------------------------------
+             NORMAL PAGE
+             ------------------------------------------------- */
 
-        customCursor.style.transform =
-          'translate(-50%, -50%) rotate(0deg)';
+          if (!activeCard) {
 
-        /* Faint if already on last slide */
-        customCursor.style.opacity =
-          currentStep === pages.length - 1 ? '0.15' : '1';
-      }
+            customCursor.textContent = '>';
 
-    });
+            customCursor.style.transform =
+              'translate(-50%, -50%) rotate(-135deg)';
 
+            customCursor.style.opacity = '1';
 
-    /* -----------------------------------------
-       Mouse leaves page
-       ----------------------------------------- */
+            return;
+          }
 
-    document.documentElement.addEventListener('mouseleave', () => {
-      customCursor.style.opacity = '0';
-    });
 
 
-    /* -----------------------------------------
-       Mouse returns to page
-       ----------------------------------------- */
+          /* -------------------------------------------------
+             CASE STUDY OPEN
+             ------------------------------------------------- */
 
-    document.documentElement.addEventListener('mouseenter', () => {
-      customCursor.style.opacity = '1';
-    });
-  }
+          const rect =
+            activeCard.getBoundingClientRect();
 
 
-  /* =========================================================
-     CARD INTERACTION
-     ========================================================= */
+          const relativeX =
+            e.clientX - rect.left;
 
-  cards.forEach(card => {
 
-    const openButton = card.querySelector('.case-study-btn');
-    const closeButton = card.querySelector('.close-cross-btn');
-    const backButton = card.querySelector('.back-btn');
+          const pages =
+            activeCard.querySelectorAll('.case-page');
 
-    const pages = card.querySelectorAll('.case-page');
 
-    let currentStep = 0;
+          const currentStep =
+            parseInt(
+              activeCard.getAttribute(
+                'data-current-step'
+              ) || '0',
+              10
+            );
 
 
-    /* -----------------------------------------
-       Open case study
-       ----------------------------------------- */
+          isMouseOnLeft =
+            relativeX < rect.width / 2;
 
-    if (openButton) {
 
-      openButton.addEventListener('click', (e) => {
 
-        e.stopPropagation();
+          /* -------------------------------------------------
+             LEFT SIDE
+             ------------------------------------------------- */
 
-        activeCard = card;
+          if (isMouseOnLeft) {
 
-        currentStep = 0;
+            customCursor.textContent = '<';
 
-        card.setAttribute(
-          'data-current-step',
-          currentStep
+            customCursor.style.transform =
+              'translate(-50%, -50%) rotate(0deg)';
+
+
+            /*
+              Faint arrow on first slide.
+            */
+
+            customCursor.style.opacity =
+              currentStep === 0
+                ? '0.15'
+                : '1';
+
+          }
+
+
+
+          /* -------------------------------------------------
+             RIGHT SIDE
+             ------------------------------------------------- */
+
+          else {
+
+            customCursor.textContent = '>';
+
+            customCursor.style.transform =
+              'translate(-50%, -50%) rotate(0deg)';
+
+
+            /*
+              Faint arrow on final slide.
+            */
+
+            customCursor.style.opacity =
+              currentStep === pages.length - 1
+                ? '0.15'
+                : '1';
+          }
+
+        });
+
+
+
+        /* ---------------------------------------------------
+           MOUSE LEAVES PAGE
+           --------------------------------------------------- */
+
+        document.documentElement.addEventListener(
+          'mouseleave',
+          () => {
+
+            customCursor.style.opacity = '0';
+
+          }
         );
 
-        card.classList.add('expanded');
 
-        pages.forEach((page, index) => {
-          page.classList.toggle(
-            'active',
-            index === currentStep
+
+        /* ---------------------------------------------------
+           MOUSE RETURNS
+           --------------------------------------------------- */
+
+        document.documentElement.addEventListener(
+          'mouseenter',
+          () => {
+
+            customCursor.style.opacity = '1';
+
+          }
+        );
+
+      }
+
+
+
+      /* =====================================================
+         CARD INTERACTION
+         ===================================================== */
+
+      cards.forEach(card => {
+
+        const openBtn =
+          card.querySelector('.case-study-btn');
+
+        const backBtn =
+          card.querySelector('.back-btn');
+
+        const crossBtn =
+          card.querySelector('.close-cross-btn');
+
+        const pages =
+          card.querySelectorAll('.case-page');
+
+        const actionRow =
+          card.querySelector('.case-study-actions');
+
+
+
+        /* ---------------------------------------------------
+           RENDER CURRENT SLIDE
+           --------------------------------------------------- */
+
+        function renderStep() {
+
+          if (pages.length === 0) {
+            return;
+          }
+
+
+          const currentStep =
+            parseInt(
+              card.getAttribute(
+                'data-current-step'
+              ) || '0',
+              10
+            );
+
+
+          pages.forEach((page, index) => {
+
+            if (index === currentStep) {
+
+              page.classList.add('active');
+
+            } else {
+
+              page.classList.remove('active');
+
+            }
+
+          });
+
+
+
+          /* -----------------------------------------------
+             UPDATE PROGRESS BAR
+             ----------------------------------------------- */
+
+          const progressBar =
+            card.querySelector('.case-progress-bar');
+
+
+          if (progressBar) {
+
+            let progressPercentage = 0;
+
+
+            if (pages.length > 1) {
+
+              progressPercentage =
+                (currentStep /
+                  (pages.length - 1)) *
+                100;
+
+            }
+
+
+            progressBar.style.width =
+              progressPercentage + '%';
+
+          }
+
+
+
+          /* -----------------------------------------------
+             SHOW ACTIONS ON FINAL SLIDE
+             ----------------------------------------------- */
+
+          if (actionRow) {
+
+            actionRow.style.display =
+              currentStep === pages.length - 1
+                ? 'flex'
+                : 'none';
+
+          }
+
+        }
+
+
+
+        /* ---------------------------------------------------
+           OPEN CASE STUDY
+           --------------------------------------------------- */
+
+        if (openBtn) {
+
+          openBtn.addEventListener(
+            'click',
+            (e) => {
+
+              e.preventDefault();
+
+              e.stopPropagation();
+
+
+              card.setAttribute(
+                'data-current-step',
+                '0'
+              );
+
+
+              renderStep();
+
+
+              container.classList.add(
+                'card-expanded'
+              );
+
+
+              card.classList.add(
+                'expanded'
+              );
+
+
+              activeCard = card;
+
+            }
           );
-        });
 
-      });
-    }
-
-
-    /* -----------------------------------------
-       Navigate case-study pages
-       ----------------------------------------- */
-
-    card.addEventListener('click', (e) => {
-
-      /* Don't navigate when clicking buttons/links */
-      if (
-        e.target.closest(
-          'a, button, input, select, textarea, label, [role="button"]'
-        )
-      ) {
-        return;
-      }
-
-      /* Only navigate when this card is active */
-      if (activeCard !== card) {
-        return;
-      }
-
-      const rect = card.getBoundingClientRect();
-
-      const relativeX = e.clientX - rect.left;
-
-
-      /* ---------------------------------------
-         Click LEFT = previous page
-         --------------------------------------- */
-
-      if (relativeX < rect.width / 2) {
-
-        if (currentStep > 0) {
-          currentStep--;
         }
 
-      }
 
 
-      /* ---------------------------------------
-         Click RIGHT = next page
-         --------------------------------------- */
+        /* ---------------------------------------------------
+           CLOSE CASE STUDY
+           --------------------------------------------------- */
 
-      else {
+        function closeCard() {
 
-        if (currentStep < pages.length - 1) {
-          currentStep++;
-        }
-      }
-
-
-      /* Update current slide */
-      card.setAttribute(
-        'data-current-step',
-        currentStep
-      );
-
-      pages.forEach((page, index) => {
-
-        page.classList.toggle(
-          'active',
-          index === currentStep
-        );
-
-      });
-
-    });
+          card.classList.remove(
+            'expanded'
+          );
 
 
-    /* -----------------------------------------
-       Close button
-       ----------------------------------------- */
-
-    const closeCard = (e) => {
-
-      if (e) {
-        e.stopPropagation();
-      }
-
-      card.classList.remove('expanded');
-
-      activeCard = null;
-
-      currentStep = 0;
-
-      card.setAttribute(
-        'data-current-step',
-        currentStep
-      );
-
-      pages.forEach((page, index) => {
-
-        page.classList.toggle(
-          'active',
-          index === 0
-        );
-
-      });
-
-    };
+          container.classList.remove(
+            'card-expanded'
+          );
 
 
-    if (closeButton) {
-      closeButton.addEventListener('click', closeCard);
-    }
-
-    if (backButton) {
-      backButton.addEventListener('click', closeCard);
-    }
+          activeCard = null;
 
 
-    /* -----------------------------------------
-       Prevent button clicks from bubbling
-       ----------------------------------------- */
+          card.setAttribute(
+            'data-current-step',
+            '0'
+          );
 
-    card.querySelectorAll(
-      '.case-study-btn, .close-cross-btn, .back-btn, .action-btn'
-    ).forEach(button => {
 
-      button.addEventListener('click', (e) => {
-        e.stopPropagation();
-      });
-
-    });
-
-  });
-
-});
-
-    cards.forEach(card => {
-      const openBtn = card.querySelector('.case-study-btn');
-      const backBtn = card.querySelector('.back-btn');
-      const crossBtn = card.querySelector('.close-cross-btn');
-      const pages = card.querySelectorAll('.case-page');
-      const actionRow = card.querySelector('.case-study-actions');
-
-      function renderStep() {
-        if (pages.length === 0) return;
-        
-        const currentStep = parseInt(card.getAttribute('data-current-step') || '0');
-
-        pages.forEach((page, index) => {
-          if (index === currentStep) {
-            page.classList.add('active');
-          } else {
-            page.classList.remove('active');
-          }
-        });
-
-        const progressBar = card.querySelector('.case-progress-bar');
-        if (progressBar) {
-          const progressPercentage = (currentStep / (pages.length - 1)) * 100;
-          progressBar.style.width = progressPercentage + '%';
-        }
-
-        if (actionRow) {
-          actionRow.style.display = (currentStep === pages.length - 1) ? 'flex' : 'none';
-        }
-      }
-
-      if (openBtn) {
-        openBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          card.setAttribute('data-current-step', '0'); 
           renderStep();
-          container.classList.add('card-expanded');
-          card.classList.add('expanded');
-          activeCard = card; 
-        });
-      }
 
-      function closeCard() {
-        card.classList.remove('expanded');
-        container.classList.remove('card-expanded');
-        activeCard = null; 
-      }
-
-      if (backBtn) {
-        backBtn.addEventListener('click', (e) => {
-          e.preventDefault(); e.stopPropagation();
-          closeCard();
-        });
-      }
-
-      if (crossBtn) {
-        crossBtn.addEventListener('click', (e) => {
-          e.preventDefault(); e.stopPropagation();
-          closeCard();
-        });
-      }
-
-      card.addEventListener('click', (e) => {
-        if (!card.classList.contains('expanded')) return;
-        if (e.target.closest('.case-study-actions') || e.target.closest('.close-cross-btn')) return;
-
-        let currentStep = parseInt(card.getAttribute('data-current-step') || '0');
-
-        if (isMouseOnLeft) {
-          if (currentStep > 0) {
-            currentStep--;
-            card.setAttribute('data-current-step', currentStep.toString());
-            renderStep();
-          }
-        } else {
-          if (currentStep < pages.length - 1) {
-            currentStep++;
-            card.setAttribute('data-current-step', currentStep.toString());
-            renderStep();
-          }
         }
+
+
+
+        /* ---------------------------------------------------
+           BACK BUTTON
+           --------------------------------------------------- */
+
+        if (backBtn) {
+
+          backBtn.addEventListener(
+            'click',
+            (e) => {
+
+              e.preventDefault();
+
+              e.stopPropagation();
+
+              closeCard();
+
+            }
+          );
+
+        }
+
+
+
+        /* ---------------------------------------------------
+           CLOSE CROSS
+           --------------------------------------------------- */
+
+        if (crossBtn) {
+
+          crossBtn.addEventListener(
+            'click',
+            (e) => {
+
+              e.preventDefault();
+
+              e.stopPropagation();
+
+              closeCard();
+
+            }
+          );
+
+        }
+
+
+
+        /* ---------------------------------------------------
+           CARD CLICK = SLIDE NAVIGATION
+           --------------------------------------------------- */
+
+        card.addEventListener(
+          'click',
+          (e) => {
+
+            /*
+              Only navigate when this card is expanded.
+            */
+
+            if (
+              !card.classList.contains(
+                'expanded'
+              )
+            ) {
+              return;
+            }
+
+
+
+            /*
+              Don't navigate when clicking controls.
+            */
+
+            if (
+              e.target.closest(
+                '.case-study-actions'
+              ) ||
+              e.target.closest(
+                '.close-cross-btn'
+              )
+            ) {
+              return;
+            }
+
+
+
+            let currentStep =
+              parseInt(
+                card.getAttribute(
+                  'data-current-step'
+                ) || '0',
+                10
+              );
+
+
+
+            /* ---------------------------------------------
+               LEFT = PREVIOUS
+               --------------------------------------------- */
+
+            if (isMouseOnLeft) {
+
+              if (currentStep > 0) {
+
+                currentStep--;
+
+                card.setAttribute(
+                  'data-current-step',
+                  currentStep.toString()
+                );
+
+                renderStep();
+
+              }
+
+            }
+
+
+
+            /* ---------------------------------------------
+               RIGHT = NEXT
+               --------------------------------------------- */
+
+            else {
+
+              if (
+                currentStep <
+                pages.length - 1
+              ) {
+
+                currentStep++;
+
+                card.setAttribute(
+                  'data-current-step',
+                  currentStep.toString()
+                );
+
+                renderStep();
+
+              }
+
+            }
+
+          }
+        );
+
       });
 
     });
-  });
-</script>
+
+  </script>
+
 </body>
 </html>
