@@ -55,10 +55,15 @@
         flex 1.2s cubic-bezier(.22, .61, .36, 1);
 }
 
-    .full-bleed-grid-container:not(.card-expanded)
-    .interactive-card:hover {
-      flex: 1.8;
-    }
+.full-bleed-grid-container:not(.card-expanded)
+.interactive-card:hover {
+    flex: 1.8;
+}
+
+.full-bleed-grid-container.hover-paused
+.interactive-card:hover {
+    flex: 1 !important;
+}
 
 
     .card-overlay {
@@ -1349,7 +1354,16 @@
 
       let isMouseOnLeft = false;
 
+container.addEventListener(
+    'pointerleave',
+    () => {
 
+        container.classList.remove(
+            'hover-paused'
+        );
+
+    }
+);
 
       /* =====================================================
          CUSTOM CURSOR
@@ -1696,15 +1710,17 @@
            --------------------------------------------------- */
 
         function closeCard() {
-
+          container.classList.add('hover-paused');
           card.classList.remove(
             'expanded'
           );
 
 
-          container.classList.remove(
-            'card-expanded'
-          );
+    setTimeout(() => {
+
+        container.classList.remove('card-expanded');
+
+    }, 1200);
 
 
           activeCard = null;
