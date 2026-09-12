@@ -42,7 +42,7 @@
        CARDS
        ========================================================= */
 
-    .interactive-card {
+.interactive-card {
     position: relative;
     flex: 1;
     overflow: hidden;
@@ -50,10 +50,10 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    transition:
-        flex 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-    }
 
+    transition:
+        flex 1.2s cubic-bezier(.22, .61, .36, 1);
+}
 
     .full-bleed-grid-container:not(.card-expanded)
     .interactive-card:hover {
@@ -87,43 +87,49 @@
     }
 
 .interactive-card.expanded {
-  transform: scale(1);
-  transition:
-    flex 0.8s cubic-bezier(.22, .61, .36, 1),
-    transform 0.8s cubic-bezier(.22, .61, .36, 1);
+    transform: scale(1);
+    transition:
+        flex 1.2s cubic-bezier(.22, .61, .36, 1),
+        transform 1.2s cubic-bezier(.22, .61, .36, 1);
 }
 
 .card-bg {
     position: absolute;
-    inset: -3%;
+    top: -4%;
+    left: -4%;
+    width: 108%;
+    height: 108%;
+
     background-size: cover;
-    background-position: center;
+    background-position: center center;
     background-repeat: no-repeat;
 
-    transform: scale(1.08);
+    transform: scale(1.06);
+    transform-origin: center center;
 
-    filter: blur(1px) saturate(115%);
+    filter: blur(2px) saturate(115%);
 
     z-index: 0;
     pointer-events: none;
 
     transition:
-        transform 1.2s cubic-bezier(.22, .61, .36, 1),
-        filter 1.2s cubic-bezier(.22, .61, .36, 1);
+        transform 1.4s cubic-bezier(.22, .61, .36, 1),
+        filter 1.4s cubic-bezier(.22, .61, .36, 1);
 }
 
 .interactive-card.expanded .card-bg {
     transform: scale(1);
     filter: blur(0) saturate(110%);
 }  
-    .full-bleed-grid-container.card-expanded
-    .interactive-card:not(.expanded) {
-      flex: 0 !important;
-      width: 0 !important;
-      max-width: 0 !important;
-      padding: 0 !important;
-      overflow: hidden;
-    }
+.full-bleed-grid-container.card-expanded
+.interactive-card:not(.expanded) {
+    flex: 0 0 0 !important;
+    width: 0 !important;
+    max-width: 0 !important;
+    min-width: 0 !important;
+    padding: 0 !important;
+    overflow: hidden;
+}
 
 
 .interactive-card.expanded .card-overlay {
