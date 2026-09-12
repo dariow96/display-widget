@@ -334,28 +334,31 @@
        CASE STUDY PAGES
        ========================================================= */
 
-    .case-page {
-      display: none;
+.case-page {
+    display: none;
+    opacity: 0;
+    padding: 0 45px;
+    max-width: 760px;
+    user-select: none !important;
+    -webkit-user-select: none !important;
+}
 
-      opacity: 0;
+.case-page.active {
+    display: block;
+    opacity: 1;
+    animation: UIElementFadeIn .3s ease forwards;
+}
 
-      padding: 0 45px;
-
-      user-select: none !important;
-      -webkit-user-select: none !important;
-    }
-
-
-    .case-page.active {
-      display: block;
-
-      opacity: 1;
-
-      animation:
-        UIElementFadeIn 0.3s ease forwards;
-    }
-
-
+.chapter-label {
+    margin: 0 0 18px 0;
+    font-family: "Trebuchet MS", sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.65);
+}
 .case-study-detail h2 {
   position: relative;
 
@@ -928,7 +931,8 @@
           <div class="slides-window">
 
             <div class="case-page active">
-
+              <div class="chapter-label">01 — OVERVIEW</div>
+              
               <h2>
                 Summary and Overview
               </h2>
@@ -944,6 +948,7 @@
 
 
             <div class="case-page">
+              <div class="chapter-label">02 — THE HURDLE</div>
 
               <h2>
                 The Hurdle
@@ -960,6 +965,7 @@
 
 
             <div class="case-page">
+              <div class="chapter-label">03 — THE BLUEPRINT</div>
 
               <h2>
                 The Blueprint
@@ -976,6 +982,7 @@
 
 
             <div class="case-page">
+              <div class="chapter-label">04 — THE IMPACT</div>
 
               <h2>
                 The Impact
@@ -1075,65 +1082,69 @@
 
           <div class="slides-window">
 
-            <div class="case-page active">
-
+ <div class="case-page active">
+              <div class="chapter-label">01 — OVERVIEW</div>
+              
               <h2>
                 Summary and Overview
               </h2>
 
               <p>
-                Driven by a veteran creative team, we speed up
-                production timelines by delivering high-fidelity
-                VFX and virtual environments that integrate
-                seamlessly into existing pipelines.
+                This is where your deep-dive case study begins.
+                Showcase the project scope, initial client
+                challenges, or overall cinematic visual goals
+                here.
               </p>
 
             </div>
 
 
             <div class="case-page">
+              <div class="chapter-label">02 — THE HURDLE</div>
 
               <h2>
                 The Hurdle
               </h2>
 
               <p>
-                Detail the traditional rendering bottlenecks,
-                tight timeline demands, and complex pipeline
-                data management challenges major entertainment
-                brands face.
+                Detail how your veteran team designed the workflow
+                architecture. Highlight how Unreal Engine bridged
+                structural mechanical layouts with gorgeous
+                real-time rendering assets.
               </p>
 
             </div>
 
 
             <div class="case-page">
+              <div class="chapter-label">03 — THE BLUEPRINT</div>
 
               <h2>
                 The Blueprint
               </h2>
 
               <p>
-                Explain your studio's custom deployment of
-                cloud-based render farms, custom pipeline
-                automation tools, and real-time environment
-                compilation engines.
+                Explain the specific high-fidelity workflow
+                metrics, asset development pipelines, and
+                scale-accurate visual engineering methods
+                deployed during development.
               </p>
 
             </div>
 
 
             <div class="case-page">
+              <div class="chapter-label">04 — THE IMPACT</div>
 
               <h2>
                 The Impact
               </h2>
 
               <p>
-                Showcase your visual milestones: accelerated
-                turnaround speeds, 40% reduction in rendering
-                pipeline overhead, and broadcast-ready cinematic
-                fidelity.
+                Present your final project outcomes or industry
+                metrics. Your client can now understand complex
+                engineering models before production lines even
+                open.
               </p>
 
             </div>
@@ -1167,11 +1178,8 @@
         </div>
 
       </div>
-    
 
     </div>
-
-
 
     <!-- =====================================================
          CARD 3: MARITIME & YACHTS
@@ -1224,65 +1232,69 @@
 
           <div class="slides-window">
 
-            <div class="case-page active">
-
+ <div class="case-page active">
+              <div class="chapter-label">01 — OVERVIEW</div>
+              
               <h2>
                 Summary and Overview
               </h2>
 
               <p>
-                We transform luxury spaces and elaborate naval
-                mechanics into scale-accurate animations that
-                allow clients to experience a vessel before
-                the keel is laid.
+                This is where your deep-dive case study begins.
+                Showcase the project scope, initial client
+                challenges, or overall cinematic visual goals
+                here.
               </p>
 
             </div>
 
 
             <div class="case-page">
+              <div class="chapter-label">02 — THE HURDLE</div>
 
               <h2>
                 The Hurdle
               </h2>
 
               <p>
-                Address the difficulties of displaying
-                hyper-detailed marine engineering schemas and
-                bespoke luxury interior fitments accurately
-                through flat 2D layout sketches.
+                Detail how your veteran team designed the workflow
+                architecture. Highlight how Unreal Engine bridged
+                structural mechanical layouts with gorgeous
+                real-time rendering assets.
               </p>
 
             </div>
 
 
             <div class="case-page">
+              <div class="chapter-label">03 — THE BLUEPRINT</div>
 
               <h2>
                 The Blueprint
               </h2>
 
               <p>
-                Highlight the rendering process: converting
-                complex CAD architecture files into beautifully
-                illuminated, real-time interactive walkthrough
-                models.
+                Explain the specific high-fidelity workflow
+                metrics, asset development pipelines, and
+                scale-accurate visual engineering methods
+                deployed during development.
               </p>
 
             </div>
 
 
             <div class="case-page">
+              <div class="chapter-label">04 — THE IMPACT</div>
 
               <h2>
                 The Impact
               </h2>
 
               <p>
-                Deliver the final outcomes: complete clarity
-                for international clientele, accelerated
-                pre-sale contract loops, and an immersive
-                preview experience.
+                Present your final project outcomes or industry
+                metrics. Your client can now understand complex
+                engineering models before production lines even
+                open.
               </p>
 
             </div>
@@ -1318,9 +1330,6 @@
       </div>
 
     </div>
-
-  </div>
-
 
 
   <!-- =======================================================
