@@ -1,0 +1,1957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Premium Portfolio Grid</title>
+
+  <style>
+
+    /* =========================================================
+       BASE
+       ========================================================= */
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100%;
+      overflow: hidden;
+      background-color: #0b0b0b;
+    
+
+    /* Prevent accidental text selection while cards animate. */
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;}
+
+
+    /* =========================================================
+       FULL BLEED GRID
+       ========================================================= */
+
+    .full-bleed-grid-container {
+      display: flex;
+      flex-direction: row;
+      width: 100vw;
+      min-height: 100vh;
+      position: relative;
+      left: 0;
+      right: 0;
+      gap: 0;
+      box-sizing: border-box;
+      overflow: hidden;
+      background-color: #0b0b0b;
+    }
+
+
+    /* =========================================================
+       CARDS
+       ========================================================= */
+
+.interactive-card {
+    position: relative;
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    transition:
+        flex 1.2s cubic-bezier(.22, .61, .36, 1);
+}
+
+.full-bleed-grid-container:not(.card-expanded)
+.interactive-card:hover {
+    flex: 1.8;
+}
+
+.full-bleed-grid-container.hover-paused
+.interactive-card:hover {
+    flex: 1 !important;
+}
+
+
+    .card-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+
+      width: 100%;
+      height: 100%;
+
+      background: rgba(0, 0, 0, 0.3);
+
+      transition:
+        background 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+        backdrop-filter 0.8s ease,
+        -webkit-backdrop-filter 0.8s ease;
+
+      z-index: 1;
+    }
+
+
+    .full-bleed-grid-container:not(.card-expanded)
+    .interactive-card:hover
+    .card-overlay {
+      background: rgba(0, 0, 0, 0.7);
+    }
+
+.interactive-card.expanded {
+    transform: scale(1);
+    transition:
+        flex 1.2s cubic-bezier(.22, .61, .36, 1),
+        transform 1.2s cubic-bezier(.22, .61, .36, 1);
+}
+
+.card-bg {
+    position: absolute;
+    top: -4%;
+    left: -4%;
+    width: 108%;
+    height: 108%;
+
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+
+    transform: scale(1.06);
+    transform-origin: center center;
+
+    filter: blur(2px) saturate(115%);
+
+    z-index: 0;
+    pointer-events: none;
+
+    transition:
+        transform 1.4s cubic-bezier(.22, .61, .36, 1),
+        filter 1.4s cubic-bezier(.22, .61, .36, 1);
+}
+
+.interactive-card.expanded .card-bg {
+    transform: scale(1);
+    filter: blur(0) saturate(110%);
+}  
+.full-bleed-grid-container.card-expanded
+.interactive-card:not(.expanded) {
+    flex: 0 !important;
+    width: 0 !important;
+    max-width: 0 !important;
+    padding: 0 !important;
+    overflow: hidden;
+}
+
+
+.interactive-card.expanded .card-overlay {
+  background: rgba(0, 0, 0, 0.52) !important;
+
+  /* Avoid backdrop-filter here: Chromium can leave a stale
+     compositing strip when the pointer enters browser chrome. */
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+
+  transition:
+    background 0.9s cubic-bezier(.22, .61, .36, 1);
+}
+.interactive-card::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  background: rgba(255, 255, 255, 0.035);
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  box-shadow:
+    inset 0 0 120px rgba(255, 255, 255, 0.025),
+    inset 0 0 80px rgba(0, 0, 0, 0.25);
+
+  pointer-events: none;
+
+  z-index: 1;
+
+  opacity: 0;
+
+  transition:
+    opacity 0.8s ease;
+}
+
+.interactive-card.expanded::after {
+  opacity: 1;
+}
+
+    /* =========================================================
+       CARD CONTENT
+       ========================================================= */
+
+    .card-content {
+      position: relative;
+      z-index: 2;
+
+      color: #ffffff;
+
+      width: 480px;
+      max-width: 90%;
+
+      margin: 0 auto;
+
+      transition:
+        width 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+
+    .interactive-card.expanded .card-content {
+      width: 760px !important;
+    }
+
+
+    .card-title {
+      color: #ffffff !important;
+
+      font-size: 45px !important;
+      font-family: 'Poppins', sans-serif;
+      font-weight: bold !important;
+
+      margin: 0 0 10px 0 !important;
+
+      text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+
+      transition:
+        transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+
+    .full-bleed-grid-container:not(.card-expanded):hover
+    .interactive-card:not(:hover)
+    .card-title {
+      transform: scale(0.62);
+    }
+
+
+    .card-description {
+      font-size: 1rem;
+      line-height: 1.4;
+
+      margin: 0 0 20px 0 !important;
+
+      color: #e5e5e5 !important;
+
+      font-family: "Trebuchet MS", sans-serif !important;
+
+      display: none;
+      opacity: 0;
+    }
+
+
+    .interactive-card:not(.expanded):hover
+    .card-description {
+      display: block;
+      animation: UIElementFadeIn 0.3s ease 0.5s forwards;
+    }
+
+
+    /* =========================================================
+       CASE STUDY BUTTON
+       ========================================================= */
+
+.case-study-btn {
+  display: none;
+  opacity: 0;
+
+  background: rgba(0, 0, 0, 0.5);
+  color: #ffffff;
+
+  padding: 12px 28px;
+
+  font-family: sans-serif !important;
+  font-weight: 600 !important;
+
+  text-transform: uppercase;
+
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+
+  border: 1px solid rgba(255, 255, 255, 0.4);
+
+
+  transition:
+        background 0.3s ease,
+        border-color 0.3s ease,
+        transform 0.3s ease;
+    }
+
+
+    .case-study-btn:hover {
+      background: #ffffff;
+      color: #000000;
+
+      border-color: #ffffff;
+
+      transform: translateY(-2px);
+
+      box-shadow:
+        0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+
+
+    .interactive-card:not(.expanded):hover
+    .case-study-btn {
+      display: inline-block;
+      animation: UIElementFadeIn 0.3s ease 0.5s forwards;
+    }
+
+
+    /* =========================================================
+       CASE STUDY DETAIL
+       ========================================================= */
+
+    .case-study-detail {
+      display: none;
+
+      text-align: left;
+
+      position: relative;
+    }
+
+
+    .interactive-card.expanded .grid-view-content {
+      display: none !important;
+    }
+
+
+    .interactive-card.expanded .case-study-detail {
+      display: block;
+
+      opacity: 0;
+
+      animation:
+      caseStudyContentIn 0.7s cubic-bezier(.22, .61, .36, 1) 0.55s forwards;
+    }
+
+
+    /* =========================================================
+       CASE STUDY PAGES
+       ========================================================= */
+
+.case-page {
+    display: none;
+    opacity: 0;
+    padding: 0 45px;
+    max-width: 760px;
+    user-select: none !important;
+    -webkit-user-select: none !important;
+}
+
+.case-page.active {
+    display: block;
+    opacity: 1;
+    animation: UIElementFadeIn .3s ease forwards;
+}
+
+.chapter-label {
+    margin: 0 0 18px 0;
+    font-family: "Trebuchet MS", sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.65);
+}
+
+.chapter-counter {
+    position: absolute;
+    left: calc(100% + 20px);
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: "Trebuchet MS", sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: .12em;
+    color: rgba(255,255,255,.65);
+    white-space: nowrap;
+    pointer-events: none;
+}
+    
+.case-study-detail h2 {
+  position: relative;
+
+  font-family: sans-serif !important;
+  font-size: 45px !important;
+  font-weight: bold !important;
+  line-height: 1.05 !important;
+  letter-spacing: normal !important;
+  text-transform: uppercase !important;
+
+  margin: 0 0 30px 0 !important;
+
+  color: #ffffff !important;
+
+-webkit-text-fill-color: #ffffff !important;
+-webkit-text-stroke: 0 !important;
+  
+  text-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.65),
+    0 1px 1px rgba(255, 255, 255, 0.25);
+}
+
+
+.case-study-detail p {
+  font-family: "Trebuchet MS", sans-serif !important;
+  font-size: 1rem !important;
+  font-weight: 500 !important;
+  line-height: 1.5 !important;
+  letter-spacing: 0 !important;
+
+  color: #f0f0f0 !important;
+
+  margin: 0 !important;
+
+  text-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.65),
+    0 8px 18px rgba(0, 0, 0, 0.45),
+    0 18px 35px rgba(0, 0, 0, 0.30);
+}
+
+
+    /* =========================================================
+       CLOSE BUTTON
+       ========================================================= */
+
+    .close-cross-btn {
+      position: absolute;
+      top: -20px;
+      right: 0;
+      background: transparent !important;
+
+      border: none !important;
+
+      color: rgba(255, 255, 255, 0.4) !important;
+
+      font-size: 2.2rem !important;
+      font-weight: 300 !important;
+
+      line-height: 1 !important;
+
+      user-select: none;
+
+      z-index: 2000;
+
+      transition:
+        color 0.3s ease,
+        transform 0.3s cubic-bezier(0.25, 1, 0.5, 1) !important;
+    }
+
+
+    .close-cross-btn:hover {
+      color: #ffffff !important;
+
+      transform:
+        rotate(90deg) scale(1.1) !important;
+    }
+
+
+    /* =========================================================
+       PROGRESS BAR
+       ========================================================= */
+
+.case-progress-container {
+    width: calc(70% - 5px);
+    height: 2px;
+    background: rgba(255,255,255,.1);
+    margin: 40px 45px 0;
+    position: relative;
+    overflow: visible;
+}
+
+.case-progress-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0%;
+    background: #fff;
+    box-shadow: 0 0 8px rgba(255,255,255,.5);
+    transition: width .4s cubic-bezier(.25,1,.5,1);
+}
+
+
+    /* =========================================================
+       CASE STUDY ACTIONS
+       ========================================================= */
+
+    .case-study-actions {
+      display: none;
+
+      gap: 15px;
+
+      margin-top: 40px;
+
+      padding: 0 45px;
+    }
+
+
+    .action-btn {
+      text-decoration: none !important;
+
+      padding: 12px 28px !important;
+
+      font-family: sans-serif !important;
+      font-weight: 600 !important;
+
+      text-transform: uppercase !important;
+
+      font-size: 0.8rem !important;
+      letter-spacing: 2px !important;
+
+      user-select: none;
+
+      display: inline-block;
+
+      transition:
+        background 0.3s ease,
+        color 0.3s ease,
+        border-color 0.3s ease,
+        transform 0.3s ease !important;
+    }
+
+
+    .action-btn:hover {
+      transform: translateY(-2px) !important;
+
+      box-shadow:
+        0 10px 20px rgba(0, 0, 0, 0.3) !important;
+    }
+
+
+    .estimator-btn {
+      background: #0066cc !important;
+      color: #ffffff !important;
+
+      border: 1px solid #0066cc !important;
+    }
+
+
+    .estimator-btn:hover {
+      background: #0052a3 !important;
+      border-color: #0052a3 !important;
+    }
+
+
+    .back-btn {
+      background: rgba(0, 0, 0, 0.3) !important;
+
+      color: #ffffff !important;
+
+      border:
+        1px solid rgba(255, 255, 255, 0.4) !important;
+
+    }
+
+
+    .back-btn:hover {
+      background: #ffffff !important;
+
+      color: #000000 !important;
+
+      border-color: #ffffff !important;
+    }
+
+
+    /* =========================================================
+       FADE ANIMATION
+       ========================================================= */
+
+    @keyframes UIElementFadeIn {
+      0% {
+        opacity: 0;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+@keyframes caseStudyContentIn {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+    /* =========================================================
+       CUSTOM CURSOR — DESKTOP
+       ========================================================= */
+
+    @media (min-width: 769px) {
+
+      /*
+        Hide the native browser cursor everywhere
+        on desktop.
+      */
+      html,
+      body,
+      html *,
+      body * {
+        cursor: none !important;
+      }
+
+
+      /*
+        Personalized cursor.
+
+        The translate(-50%, -50%) keeps the cursor
+        centered exactly on the mouse position.
+      */
+      #dynamic-cursor {
+        position: fixed !important;
+
+        left: 0;
+        top: 0;
+
+        width: 40px !important;
+        height: 40px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        pointer-events: none !important;
+
+        z-index: 999999 !important;
+
+        font-family:
+          Arial,
+          Helvetica,
+          sans-serif !important;
+
+        font-size: 2.5rem !important;
+
+        font-weight: 900 !important;
+
+        line-height: 40px !important;
+
+        text-align: center !important;
+
+        color: #ffffff !important;
+
+        /*
+          Keeps the cursor visible on both
+          light and dark backgrounds.
+        */
+        mix-blend-mode: difference !important;
+
+        transform:
+          translate(-50%, -50%)
+          rotate(-135deg);
+
+        transform-origin: center center !important;
+
+        opacity: 0;
+        visibility: hidden;
+
+        display: block !important;
+
+        transition:
+          transform 0.22s ease,
+          opacity 0.22s ease !important;
+      }
+    }
+
+
+    /* =========================================================
+       MOBILE
+       ========================================================= */
+
+    /* Defensive cursor layer: it must never participate in layout. */
+    #dynamic-cursor {
+      pointer-events: none !important;
+      user-select: none !important;
+      -webkit-user-select: none !important;
+    }
+
+    @media (max-width: 768px) {
+
+      .full-bleed-grid-container {
+        flex-direction: column !important;
+
+        width: 100% !important;
+
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+
+        left: auto !important;
+        right: auto !important;
+
+        min-height: auto !important;
+      }
+
+
+      .interactive-card {
+        min-height: 40vh !important;
+
+        flex: none !important;
+      }
+
+
+      .card-content {
+        width: 85% !important;
+      }
+
+
+      .interactive-card.expanded {
+        min-height: 100vh !important;
+      }
+
+
+      .full-bleed-grid-container.card-expanded
+      .interactive-card:not(.expanded) {
+        min-height: 0 !important;
+
+        height: 0 !important;
+      }
+
+
+      .case-page {
+        padding: 0 20px !important;
+      }
+
+
+      .case-study-actions {
+        flex-direction: column !important;
+
+        padding: 0 20px !important;
+      }
+
+
+      /*
+        Restore native cursor on mobile.
+      */
+      html,
+      body,
+      html *,
+      body * {
+        cursor: auto !important;
+      }
+
+
+      /*
+        Completely disable personalized cursor.
+      */
+      #dynamic-cursor {
+        display: none !important;
+      }
+    }
+
+    /* =========================================================
+   TRUSTED BY OVAL — MIDDLE CARD
+   ========================================================= */
+
+.interactive-card:nth-child(2) .enlace-ovalo {
+    position: absolute;
+    left: 50%;
+    bottom: 35px;
+
+    transform: translateX(-50%);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    text-decoration: none;
+
+    z-index: 10;
+
+    opacity: 1;
+
+    transition: opacity 0.3s ease;
+}
+
+
+/* Hide it when the middle card is hovered */
+.interactive-card:nth-child(2):hover .enlace-ovalo {
+    opacity: 0;
+    pointer-events: none;
+}
+
+
+/* Also hide it when the middle card is expanded */
+.interactive-card:nth-child(2).expanded .enlace-ovalo {
+    opacity: 0;
+    pointer-events: none;
+}
+
+
+/* Oval */
+.interactive-card:nth-child(2) .ovalo {
+    position: relative;
+
+    width: 30px;
+    height: 65px;
+
+    background-color: transparent;
+
+    border: 5px solid #ffffff;
+    border-radius: 30%;
+
+    overflow: hidden;
+
+    box-sizing: border-box;
+}
+
+
+/* Horizontal axis */
+.interactive-card:nth-child(2) .eje-horizontal {
+    position: absolute;
+
+    top: 50%;
+    left: 0;
+
+    width: 100%;
+    height: 1px;
+
+    transform: translateY(-50%);
+
+    border-top: 1px dashed rgba(255, 255, 255, 0.4);
+}
+
+
+/* Vertical axis */
+.interactive-card:nth-child(2) .eje-vertical {
+    position: absolute;
+
+    left: 50%;
+    top: 0;
+
+    width: 1px;
+    height: 100%;
+
+    transform: translateX(-50%);
+
+    border-left: 1px dashed rgba(255, 255, 255, 0.4);
+}
+
+
+/* Moving dot */
+.interactive-card:nth-child(2) .punto-central {
+    position: absolute;
+
+    top: 25%;
+    left: 50%;
+
+    width: 12px;
+    height: 12px;
+
+    background-color: #ffffff;
+    border-radius: 50%;
+
+    animation: moverAbajo 1s ease-in-out infinite;
+}
+
+
+@keyframes moverAbajo {
+    0% {
+        transform: translate(-50%, -50%);
+        opacity: 1;
+    }
+
+    70% {
+        transform: translate(-50%, 15px);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(-50%, 25px);
+        opacity: 0;
+    }
+}
+
+  </style>
+</head>
+
+
+<body>
+
+
+  <!-- =======================================================
+       PORTFOLIO GRID
+       ======================================================= -->
+
+  <div
+    class="full-bleed-grid-container"
+    id="grid-container"
+  >
+
+
+    <!-- =====================================================
+         CARD 1: AUTOMOTIVE & TECH
+         ===================================================== -->
+
+<div class="interactive-card">
+  <div
+    class="card-bg"
+    style="background-image: url('https://www.r25media.com/s/Captura-de-pantalla-2025-12-04-162713.png');"
+  ></div>
+
+      <div class="card-overlay"></div>
+
+      <div class="card-content">
+
+        <div class="grid-view-content">
+
+          <h3 class="card-title">
+            FOR<br>
+            AUTOMOTIVE<br>
+            & TECH
+          </h3>
+
+          <p class="card-description">
+            Leveraging Unreal Engine and realistic 3D rendering,
+            we bridge the gap between complex mechanics and
+            consumer desire, producing visual assets that
+            elevate your product and cement your market
+            leadership.
+          </p>
+
+          <button class="case-study-btn">
+            Case Studies
+          </button>
+
+        </div>
+
+
+        <div class="case-study-detail">
+
+          <button
+            class="close-cross-btn"
+            type="button"
+            aria-label="Close Case Study"
+          >
+            &times;
+          </button>
+
+
+          <div class="slides-window">
+
+            <div class="case-page active">
+              <div class="chapter-label">01 — OVERVIEW</div>
+              
+              <h2>
+                Summary and Overview
+              </h2>
+
+              <p>
+                This is where your deep-dive case study begins.
+                Showcase the project scope, initial client
+                challenges, or overall cinematic visual goals
+                here.
+              </p>
+
+            </div>
+
+
+            <div class="case-page">
+              <div class="chapter-label">02 — THE HURDLE</div>
+
+              <h2>
+                The Hurdle
+              </h2>
+
+              <p>
+                Detail how your veteran team designed the workflow
+                architecture. Highlight how Unreal Engine bridged
+                structural mechanical layouts with gorgeous
+                real-time rendering assets.
+              </p>
+
+            </div>
+
+
+            <div class="case-page">
+              <div class="chapter-label">03 — THE BLUEPRINT</div>
+
+              <h2>
+                The Blueprint
+              </h2>
+
+              <p>
+                Explain the specific high-fidelity workflow
+                metrics, asset development pipelines, and
+                scale-accurate visual engineering methods
+                deployed during development.
+              </p>
+
+            </div>
+
+
+            <div class="case-page">
+              <div class="chapter-label">04 — THE IMPACT</div>
+
+              <h2>
+                The Impact
+              </h2>
+
+              <p>
+                Present your final project outcomes or industry
+                metrics. Your client can now understand complex
+                engineering models before production lines even
+                open.
+              </p>
+
+            </div>
+
+          </div>
+          
+          <div class="case-progress-container">
+            <div class="chapter-counter">01 / 04</div>
+            <div class="case-progress-bar"></div>
+            
+
+          </div>
+
+
+          <div class="case-study-actions">
+
+            <a
+              href="https://www.r25media.com/projectconfigurator"
+              class="action-btn estimator-btn"
+              target="_blank"
+            >
+              Personalized Project Estimator
+            </a>
+
+            <button type="button" class="action-btn back-btn">
+              Back
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         CARD 2: STUDIOS & ENTERTAINMENT
+         ===================================================== -->
+
+<div class="interactive-card">
+
+  <div
+    class="card-bg"
+    style="background-image: url('https://www.r25media.com/s/Captura-de-pantalla-2025-12-29-182412.png');"
+  ></div>
+
+  <div class="card-overlay"></div>
+
+      <div class="card-content">
+
+        <div class="grid-view-content">
+
+          <h3 class="card-title">
+            FOR<br>
+            STUDIOS &<br>
+            ENTERTAINMENT
+          </h3>
+
+          <p class="card-description">
+            Driven by a veteran creative team with production
+            experience for major entertainment brands, we deliver
+            high-fidelity VFX, character animation, and virtual
+            environments speeding up your production timeline.
+          </p>
+
+          <button class="case-study-btn">
+            Case Studies
+          </button>
+
+        </div>
+
+
+        <div class="case-study-detail">
+
+          <button
+            class="close-cross-btn"
+            type="button"
+            aria-label="Close Case Study"
+          >
+            &times;
+          </button>
+
+
+          <div class="slides-window">
+
+ <div class="case-page active">
+              <div class="chapter-label">01 — OVERVIEW</div>
+              
+              <h2>
+                Summary and Overview
+              </h2>
+
+              <p>
+                This is where your deep-dive case study begins.
+                Showcase the project scope, initial client
+                challenges, or overall cinematic visual goals
+                here.
+              </p>
+
+            </div>
+
+
+            <div class="case-page">
+              <div class="chapter-label">02 — THE HURDLE</div>
+
+              <h2>
+                The Hurdle
+              </h2>
+
+              <p>
+                Detail how your veteran team designed the workflow
+                architecture. Highlight how Unreal Engine bridged
+                structural mechanical layouts with gorgeous
+                real-time rendering assets.
+              </p>
+
+            </div>
+
+
+            <div class="case-page">
+              <div class="chapter-label">03 — THE BLUEPRINT</div>
+
+              <h2>
+                The Blueprint
+              </h2>
+
+              <p>
+                Explain the specific high-fidelity workflow
+                metrics, asset development pipelines, and
+                scale-accurate visual engineering methods
+                deployed during development.
+              </p>
+
+            </div>
+
+
+            <div class="case-page">
+              <div class="chapter-label">04 — THE IMPACT</div>
+
+              <h2>
+                The Impact
+              </h2>
+
+              <p>
+                Present your final project outcomes or industry
+                metrics. Your client can now understand complex
+                engineering models before production lines even
+                open.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="case-progress-container">
+
+            <div class="case-progress-bar"></div>
+            <div class="chapter-counter">01 / 04</div>        
+
+          </div>
+
+
+          <div class="case-study-actions">
+
+            <a
+              href="https://www.r25media.com/projectconfigurator"
+              class="action-btn estimator-btn"
+              target="_blank"
+            >
+              Personalized Project Estimator
+            </a>
+
+            <button type="button" class="action-btn back-btn">
+              Back
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- =====================================================
+         CARD 3: MARITIME & YACHTS
+         ===================================================== -->
+
+<div class="interactive-card">
+
+  <div
+    class="card-bg"
+    style="background-image: url('https://www.r25media.com/s/yacht-render.PNG');"
+  ></div>
+
+  <div class="card-overlay"></div>
+
+      <div class="card-content">
+
+        <div class="grid-view-content">
+
+          <h3 class="card-title">
+            FOR<br>
+            MARITIME<br>
+            & YACHTS
+          </h3>
+
+          <p class="card-description">
+            We transform luxury spaces and elaborated mechanics
+            into cinematic, scale-accurate animations that allow
+            your clients to easily understand complex engineering
+            before the keel is ever laid.
+          </p>
+
+          <button class="case-study-btn">
+            Case Studies
+          </button>
+
+        </div>
+
+
+        <div class="case-study-detail">
+
+          <button
+            class="close-cross-btn"
+            type="button"
+            aria-label="Close Case Study"
+          >
+            &times;
+          </button>
+
+
+          <div class="slides-window">
+
+ <div class="case-page active">
+              <div class="chapter-label">01 — OVERVIEW</div>
+              
+              <h2>
+                Summary and Overview
+              </h2>
+
+              <p>
+                This is where your deep-dive case study begins.
+                Showcase the project scope, initial client
+                challenges, or overall cinematic visual goals
+                here.
+              </p>
+
+            </div>
+
+
+            <div class="case-page">
+              <div class="chapter-label">02 — THE HURDLE</div>
+
+              <h2>
+                The Hurdle
+              </h2>
+
+              <p>
+                Detail how your veteran team designed the workflow
+                architecture. Highlight how Unreal Engine bridged
+                structural mechanical layouts with gorgeous
+                real-time rendering assets.
+              </p>
+
+            </div>
+
+
+            <div class="case-page">
+              <div class="chapter-label">03 — THE BLUEPRINT</div>
+
+              <h2>
+                The Blueprint
+              </h2>
+
+              <p>
+                Explain the specific high-fidelity workflow
+                metrics, asset development pipelines, and
+                scale-accurate visual engineering methods
+                deployed during development.
+              </p>
+
+            </div>
+
+
+            <div class="case-page">
+              <div class="chapter-label">04 — THE IMPACT</div>
+
+              <h2>
+                The Impact
+              </h2>
+
+              <p>
+                Present your final project outcomes or industry
+                metrics. Your client can now understand complex
+                engineering models before production lines even
+                open.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="case-progress-container">
+          <div class="case-progress-bar"></div>  
+          <div class="chapter-counter">01 / 04</div>
+            
+
+          </div>
+
+
+          <div class="case-study-actions">
+
+            <a
+              href="https://www.r25media.com/projectconfigurator"
+              class="action-btn estimator-btn"
+              target="_blank"
+            >
+              Personalized Project Estimator
+            </a>
+
+            <button type="button" class="action-btn back-btn">
+              Back
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+  <!-- =======================================================
+       PERSONALIZED CURSOR
+       ======================================================= -->
+
+  <div id="dynamic-cursor">&gt;</div>
+
+
+
+  <!-- =======================================================
+       JAVASCRIPT
+       ======================================================= -->
+
+  <script>
+
+    document.addEventListener('DOMContentLoaded', () => {
+
+      /*
+       * Card text moves underneath the pointer during flex animations.
+       * Clear any browser selection so dragging across moving text cannot
+       * leave highlighted text behind.
+       */
+      const clearTextSelection = () => {
+        const selection = window.getSelection();
+        if (selection && selection.rangeCount) {
+          selection.removeAllRanges();
+        }
+      };
+
+      document.addEventListener('pointerdown', clearTextSelection);
+      document.addEventListener('dragstart', (e) => {
+        e.preventDefault();
+        clearTextSelection();
+      });
+
+
+      const container =
+        document.getElementById('grid-container');
+
+      const cards =
+        document.querySelectorAll('.interactive-card');
+
+      const customCursor =
+        document.getElementById('dynamic-cursor');
+
+
+      let activeCard = null;
+
+      let isMouseOnLeft = false;
+
+container.addEventListener(
+    'pointerleave',
+    () => {
+
+        container.classList.remove(
+            'hover-paused'
+        );
+
+    }
+);
+
+      /* =====================================================
+         CUSTOM CURSOR
+         ===================================================== */
+
+      if (customCursor) {
+
+        window.addEventListener('pointermove', (e) => {
+
+          /* -------------------------------------------------
+             POSITION CURSOR
+             ------------------------------------------------- */
+
+          customCursor.style.left =
+            `${e.clientX}px`;
+
+          customCursor.style.top =
+            `${e.clientY}px`;
+
+
+          /* -------------------------------------------------
+             HIDE / SHRINK OVER CLICKABLE ELEMENTS
+             ------------------------------------------------- */
+
+          const clickable =
+            e.target.closest(
+              'a:not(.logo-placeholder), button, input, select, textarea, label, [role="button"]'
+            );
+
+
+          if (clickable) {
+
+            customCursor.style.transform =
+              'translate(-50%, -50%) rotate(45deg) scale(0.15)';
+
+            customCursor.style.opacity = '0';
+
+            return;
+          }
+
+
+          /* -------------------------------------------------
+             NORMAL PAGE
+             ------------------------------------------------- */
+
+          if (!activeCard) {
+
+            customCursor.textContent = '>';
+
+            customCursor.style.transform =
+              'translate(-50%, -50%) rotate(-135deg) scale(1)';
+
+            customCursor.style.opacity = '1';
+
+            return;
+          }
+
+
+          /* -------------------------------------------------
+             CASE STUDY OPEN — LEFT / RIGHT SLIDE CURSOR
+             ------------------------------------------------- */
+
+          const rect =
+            activeCard.getBoundingClientRect();
+
+          const relativeX =
+            e.clientX - rect.left;
+
+          const pages =
+            activeCard.querySelectorAll('.case-page');
+
+          const currentStep =
+            parseInt(
+              activeCard.getAttribute(
+                'data-current-step'
+              ) || '0',
+              10
+            );
+
+
+          /* -------------------------------------------------
+             20% CENTER ZONE = NORMAL CURSOR
+
+             The middle 20% of the card/viewport is neutral:
+             40% -> 60%.
+
+             Outside that zone, the cursor smoothly changes
+             into the left/right slide navigation cursor.
+             ------------------------------------------------- */
+
+          const centerStart = rect.width * 0.40;
+          const centerEnd = rect.width * 0.60;
+
+          const distanceFromCenter =
+            relativeX < centerStart
+              ? centerStart - relativeX
+              : relativeX - centerEnd;
+
+          /* Keep the existing state used by the slide
+             click handler. Only the cursor presentation
+             changes inside the neutral center zone. */
+
+          isMouseOnLeft =
+            relativeX < rect.width / 2;
+
+
+          /* -------------------------------------------------
+             CENTER 20% = NORMAL CURSOR
+             ------------------------------------------------- */
+
+          if (
+            relativeX >= centerStart &&
+            relativeX <= centerEnd
+          ) {
+
+            customCursor.textContent = '>';
+
+            customCursor.style.transform =
+              'translate(-50%, -50%) rotate(-135deg) scale(1)';
+
+            customCursor.style.opacity = '1';
+
+            return;
+          }
+
+
+          /* -------------------------------------------------
+             LEFT SIDE = PREVIOUS
+
+             Use a small smooth transition zone so the cursor
+             does not snap abruptly at 40%.
+             ------------------------------------------------- */
+
+          if (relativeX < centerStart) {
+
+            customCursor.textContent = '<';
+
+            customCursor.style.transform =
+              'translate(-50%, -50%) rotate(0deg) scale(1)';
+
+            customCursor.style.opacity =
+              currentStep === 0
+                ? '0.15'
+                : '1';
+
+            return;
+          }
+
+
+          /* -------------------------------------------------
+             RIGHT SIDE = NEXT
+             ------------------------------------------------- */
+
+          customCursor.textContent = '>';
+
+          customCursor.style.transform =
+            'translate(-50%, -50%) rotate(0deg) scale(1)';
+
+          customCursor.style.opacity =
+            currentStep === pages.length - 1
+              ? '0.15'
+              : '1';
+
+        });
+
+
+        /* -------------------------------------------------
+           HIDE CURSOR OUTSIDE THE ACTUAL VIEWPORT
+
+           Using html mouseenter/mouseleave here can fire while
+           crossing browser chrome or during compositing changes,
+           which can leave the fixed cursor/compositing layer in
+           a stale state. Pointer events on the window are safer.
+           ------------------------------------------------- */
+
+        const hideCustomCursor = () => {
+          customCursor.style.opacity = '0';
+          customCursor.style.visibility = 'hidden';
+        };
+
+        const showCustomCursor = () => {
+          customCursor.style.visibility = 'visible';
+        };
+
+        window.addEventListener('pointerout', (e) => {
+          if (!e.relatedTarget) {
+            hideCustomCursor();
+          }
+        });
+
+        window.addEventListener('blur', hideCustomCursor);
+
+        window.addEventListener('focus', () => {
+          /* Wait for the first pointermove before showing it again. */
+          hideCustomCursor();
+        });
+
+        window.addEventListener('pointermove', (e) => {
+          if (
+            e.clientX < 0 ||
+            e.clientY < 0 ||
+            e.clientX > window.innerWidth ||
+            e.clientY > window.innerHeight
+          ) {
+            hideCustomCursor();
+            return;
+          }
+
+          showCustomCursor();
+        });
+
+        document.addEventListener('visibilitychange', () => {
+          if (document.hidden) hideCustomCursor();
+        });
+
+      }
+
+
+      /* =====================================================
+         CARD INTERACTION
+         ===================================================== */
+
+      cards.forEach(card => {
+
+        const openBtn =
+          card.querySelector('.case-study-btn');
+
+        const backBtn =
+          card.querySelector('.back-btn');
+
+        const crossBtn =
+          card.querySelector('.close-cross-btn');
+
+        const pages =
+          card.querySelectorAll('.case-page');
+
+        const actionRow =
+          card.querySelector('.case-study-actions');
+
+
+
+        /* ---------------------------------------------------
+           RENDER CURRENT SLIDE
+           --------------------------------------------------- */
+
+        function renderStep() {
+
+          if (pages.length === 0) {
+            return;
+          }
+
+
+          const currentStep =
+            parseInt(
+              card.getAttribute(
+                'data-current-step'
+              ) || '0',
+              10
+            );
+          const chapterCounter = card.querySelector('.chapter-counter');
+
+          if (chapterCounter) {
+          chapterCounter.textContent =
+          `${String(currentStep + 1).padStart(2, '0')} / 04`;
+}
+
+          pages.forEach((page, index) => {
+
+            if (index === currentStep) {
+
+              page.classList.add('active');
+
+            } else {
+
+              page.classList.remove('active');
+
+            }
+
+          });
+
+
+
+          /* -----------------------------------------------
+             UPDATE PROGRESS BAR
+             ----------------------------------------------- */
+
+          const progressBar =
+            card.querySelector('.case-progress-bar');
+
+
+          if (progressBar) {
+
+            let progressPercentage = 0;
+
+
+            if (pages.length > 1) {
+
+              progressPercentage =
+                (currentStep /
+                  (pages.length - 1)) *
+                100;
+
+            }
+
+
+            progressBar.style.width =
+              progressPercentage + '%';
+
+          }
+
+
+
+          /* -----------------------------------------------
+             SHOW ACTIONS ON FINAL SLIDE
+             ----------------------------------------------- */
+
+          if (actionRow) {
+
+            actionRow.style.display =
+              currentStep === pages.length - 1
+                ? 'flex'
+                : 'none';
+
+          }
+
+        }
+
+
+
+        /* ---------------------------------------------------
+           OPEN CASE STUDY
+           --------------------------------------------------- */
+
+        if (openBtn) {
+
+          openBtn.addEventListener(
+            'click',
+            (e) => {
+
+              e.preventDefault();
+
+              e.stopPropagation();
+              clearTextSelection();
+
+
+              card.setAttribute(
+                'data-current-step',
+                '0'
+              );
+
+
+              renderStep();
+
+
+              container.classList.add(
+                'card-expanded'
+              );
+
+
+              card.classList.add(
+                'expanded'
+              );
+
+
+              activeCard = card;
+
+            }
+          );
+
+        }
+
+
+
+        /* ---------------------------------------------------
+           CLOSE CASE STUDY
+           --------------------------------------------------- */
+
+function closeCard() {
+
+    clearTextSelection();
+
+
+    container.classList.add('hover-paused');
+
+
+    card.classList.remove('expanded');
+
+
+    container.classList.remove('card-expanded');
+
+    activeCard = null;
+  
+    card.setAttribute(
+        'data-current-step',
+        '0'
+    );
+
+    renderStep();
+}
+
+
+        /* ---------------------------------------------------
+           BACK BUTTON
+           --------------------------------------------------- */
+
+        if (backBtn) {
+
+          backBtn.addEventListener(
+            'click',
+            (e) => {
+
+              e.preventDefault();
+
+              e.stopPropagation();
+
+              closeCard();
+
+            }
+          );
+
+        }
+
+
+
+        /* ---------------------------------------------------
+           CLOSE CROSS
+           --------------------------------------------------- */
+
+        if (crossBtn) {
+
+          crossBtn.addEventListener(
+            'click',
+            (e) => {
+
+              e.preventDefault();
+
+              e.stopPropagation();
+
+              closeCard();
+
+            }
+          );
+
+        }
+
+
+
+        /* ---------------------------------------------------
+           CARD CLICK = SLIDE NAVIGATION
+           --------------------------------------------------- */
+
+        card.addEventListener(
+          'click',
+          (e) => {
+
+            /*
+              Only navigate when this card is expanded.
+            */
+
+            if (
+              !card.classList.contains(
+                'expanded'
+              )
+            ) {
+              return;
+            }
+
+
+
+            /*
+              Don't navigate when clicking controls.
+            */
+
+            if (
+              e.target.closest(
+                '.case-study-actions'
+              ) ||
+              e.target.closest(
+                '.close-cross-btn'
+              )
+            ) {
+              return;
+            }
+
+
+
+            let currentStep =
+              parseInt(
+                card.getAttribute(
+                  'data-current-step'
+                ) || '0',
+                10
+              );
+
+
+
+            /* ---------------------------------------------
+               LEFT = PREVIOUS
+               --------------------------------------------- */
+
+            if (isMouseOnLeft) {
+
+              if (currentStep > 0) {
+
+                currentStep--;
+
+                card.setAttribute(
+                  'data-current-step',
+                  currentStep.toString()
+                );
+
+                renderStep();
+
+              }
+
+            }
+
+
+
+            /* ---------------------------------------------
+               RIGHT = NEXT
+               --------------------------------------------- */
+
+            else {
+
+              if (
+                currentStep <
+                pages.length - 1
+              ) {
+
+                currentStep++;
+
+                card.setAttribute(
+                  'data-current-step',
+                  currentStep.toString()
+                );
+
+                renderStep();
+
+              }
+
+            }
+
+          }
+        );
+
+      });
+
+    });
+
+  </script>
+
+</body>
+</html>
