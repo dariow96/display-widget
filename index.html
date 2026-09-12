@@ -362,15 +362,14 @@
 
 .chapter-counter {
     position: absolute;
-    left: calc(50% + 25%);
-    bottom: 42px;
-
+    left: calc(100% + 20px);
+    top: 50%;
+    transform: translateY(-50%);
     font-family: "Trebuchet MS", sans-serif;
     font-size: 12px;
     font-weight: 500;
     letter-spacing: .12em;
     color: rgba(255,255,255,.65);
-
     white-space: nowrap;
     pointer-events: none;
 }
@@ -459,39 +458,25 @@
        PROGRESS BAR
        ========================================================= */
 
-    .case-progress-container {
-      width: calc(100% - 90px);
+.case-progress-container {
+    width: calc(100% - 90px);
+    height: 2px;
+    background: rgba(255,255,255,.1);
+    margin: 40px auto 0 auto;
+    position: relative;
+    overflow: visible;
+}
 
-      height: 2px;
-
-      background: rgba(255, 255, 255, 0.1);
-
-      margin: 40px auto 0 auto;
-
-      position: relative;
-
-      overflow: hidden;
-    }
-
-
-    .case-progress-bar {
-      position: absolute;
-
-      top: 0;
-      left: 0;
-
-      height: 100%;
-
-      width: 0%;
-
-      background: #ffffff;
-
-      box-shadow:
-        0 0 8px rgba(255, 255, 255, 0.5);
-
-      transition:
-        width 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-    }
+.case-progress-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0%;
+    background: #fff;
+    box-shadow: 0 0 8px rgba(255,255,255,.5);
+    transition: width .4s cubic-bezier(.25,1,.5,1);
+}
 
 
     /* =========================================================
@@ -1015,9 +1000,9 @@
 
           </div>
 
-          <div class="chapter-counter">01 / 04</div>
+          <div class="chapter-counter">01 / 04
           
-          <div class="case-progress-container">
+          <div class="case-progress-container"></div>
 
             <div class="case-progress-bar"></div>
 
@@ -1168,8 +1153,8 @@
 
           </div>
 
-          <div class="chapter-counter">01 / 04</div>
-          <div class="case-progress-container">
+          <div class="chapter-counter">01 / 04
+          <div class="case-progress-container"></div>
 
             <div class="case-progress-bar"></div>
 
@@ -1318,8 +1303,8 @@
 
           </div>
 
-          <div class="chapter-counter">01 / 04</div>
-          <div class="case-progress-container">
+          <div class="chapter-counter">01 / 04
+          <div class="case-progress-container"></div>
 
             <div class="case-progress-bar"></div>
 
