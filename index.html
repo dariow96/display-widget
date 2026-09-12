@@ -43,18 +43,14 @@
        ========================================================= */
 
     .interactive-card {
-      position: relative;
-      flex: 1;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-
-      transition:
+    position: relative;
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition:
         flex 0.5s cubic-bezier(0.25, 1, 0.5, 1);
     }
 
@@ -97,43 +93,29 @@
     transform 0.8s cubic-bezier(.22, .61, .36, 1);
 }
 
-.interactive-card::before {
-  content: "";
+.card-bg {
+    position: absolute;
+    inset: -3%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 
-  position: absolute;
-  inset: -3%;
+    transform: scale(1.08);
 
-  background: inherit;
-  background-size: cover;
-  background-position: center;
+    filter: blur(1px) saturate(115%);
 
-  transform: scale(1.08);
+    z-index: 0;
+    pointer-events: none;
 
-  filter:
-    blur(1px)
-    saturate(115%);
-
-  opacity: 0;
-
-  z-index: 0;
-
-  transition:
-    transform 1.2s cubic-bezier(.22, .61, .36, 1),
-    opacity 0.8s ease,
-    filter 1.2s ease;
-
-  pointer-events: none;
+    transition:
+        transform 1.2s cubic-bezier(.22, .61, .36, 1),
+        filter 1.2s cubic-bezier(.22, .61, .36, 1);
 }
 
-.interactive-card.expanded::before {
-  opacity: 1;
-
-  transform: scale(1);
-
-  filter:
-    blur(0)
-    saturate(110%);
-}
+.interactive-card.expanded .card-bg {
+    transform: scale(1);
+    filter: blur(0) saturate(110%);
+}  
     .full-bleed-grid-container.card-expanded
     .interactive-card:not(.expanded) {
       flex: 0 !important;
@@ -891,9 +873,11 @@
          ===================================================== -->
 
     <div
-      class="interactive-card"
-      style="background-image: url('https://www.r25media.com/s/Captura-de-pantalla-2025-12-04-162713.png');"
-    >
+<div class="interactive-card">
+  <div
+    class="card-bg"
+    style="background-image: url('https://www.r25media.com/s/Captura-de-pantalla-2025-12-04-162713.png');"
+  ></div>
 
       <div class="card-overlay"></div>
 
@@ -1037,8 +1021,10 @@
 
     <div
       class="interactive-card"
+        <div
+    class="card-bg"
       style="background-image: url('https://www.r25media.com/s/Captura-de-pantalla-2025-12-29-182412.png');"
-    >
+    ></div>
 
       <div class="card-overlay"></div>
 
@@ -1182,8 +1168,10 @@
 
     <div
       class="interactive-card"
+        <div
+    class="card-bg"
       style="background-image: url('https://www.r25media.com/s/yacht-render.PNG');"
-    >
+      ></div>
 
       <div class="card-overlay"></div>
 
