@@ -128,10 +128,9 @@
 }  
 .full-bleed-grid-container.card-expanded
 .interactive-card:not(.expanded) {
-    flex: 0 0 0 !important;
+    flex: 0 !important;
     width: 0 !important;
     max-width: 0 !important;
-    min-width: 0 !important;
     padding: 0 !important;
     overflow: hidden;
 }
@@ -1709,33 +1708,26 @@ container.addEventListener(
            CLOSE CASE STUDY
            --------------------------------------------------- */
 
-        function closeCard() {
-          container.classList.add('hover-paused');
-          card.classList.remove(
-            'expanded'
-          );
+function closeCard() {
 
 
-    setTimeout(() => {
-
-        container.classList.remove('card-expanded');
-
-    }, 1200);
+    container.classList.add('hover-paused');
 
 
-          activeCard = null;
+    card.classList.remove('expanded');
 
 
-          card.setAttribute(
-            'data-current-step',
-            '0'
-          );
+    container.classList.remove('card-expanded');
 
+    activeCard = null;
+  
+    card.setAttribute(
+        'data-current-step',
+        '0'
+    );
 
-          renderStep();
-
-        }
-
+    renderStep();
+}
 
 
         /* ---------------------------------------------------
